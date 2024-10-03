@@ -1,18 +1,14 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.models.CultoModel;
-import com.mava.ordemCulto.repositories.CultoRepository;
+import com.mava.ordemCulto.services.CultoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/culto")
@@ -20,22 +16,32 @@ import java.util.Optional;
 @Validated // Aqui o @Validated é aplicado para validar todas as chamadas dentro desta classe
 public class CultoController {
 
-    private final CultoRepository cultoRepository;
+    private final CultoService cultoService;
 
     //CREATE
     @PostMapping
-    public ResponseEntity<CultoModel> createNewCulto(@RequestBody CultoModel culto) {
-        if (culto.getId() != null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .header("Error", "Culto já existe")
-                    .body(null);
-        }
-
-        CultoModel newCulto = cultoRepository.save(culto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("Created-Culto", "CultoCriadoComSucesso")
-                .body(newCulto);
+    public ResponseEntity<CultoModel> createNewCulto(@Valid @RequestBody CultoModel cultoModel) {
+        return cultoService.create(cultoModel);
     }
+
+    @GetMapping
+    public ResponseEntity<List<CultoModel>> getAllCultos(){
+        return cultoService.getAll();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<CultoModel> getByIdCulto(@PathVariable("id") Integer id){
+        return cultoService.getById(id);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<CultoModel> updateByIdCulto(@PathVariable("id") Integer id, CultoModel cultoAtualizado){
+        return cultoService.update(id, cultoAtualizado);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteByIdCulto(@PathVariable("id") Integer id){
+        return cultoService.delete(id);
+    }
+
 }
