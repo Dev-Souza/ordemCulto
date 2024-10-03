@@ -24,24 +24,27 @@ public class CultoController {
         return cultoService.create(cultoModel);
     }
 
+    //GET ALL
     @GetMapping
     public ResponseEntity<List<CultoModel>> getAllCultos(){
         return cultoService.getAll();
     }
 
+    //GET BY ID
     @GetMapping("{id}")
     public ResponseEntity<CultoModel> getByIdCulto(@PathVariable("id") Integer id){
         return cultoService.getById(id);
     }
 
+    //UPDATE
     @PutMapping("{id}")
-    public ResponseEntity<CultoModel> updateByIdCulto(@PathVariable("id") Integer id, CultoModel cultoAtualizado){
+    public ResponseEntity<CultoModel> updateByIdCulto(@PathVariable("id") Integer id, @Valid @RequestBody CultoModel cultoAtualizado) {
         return cultoService.update(id, cultoAtualizado);
     }
 
+    //DELETE
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteByIdCulto(@PathVariable("id") Integer id){
         return cultoService.delete(id);
     }
-
 }
