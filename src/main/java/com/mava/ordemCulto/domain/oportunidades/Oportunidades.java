@@ -19,5 +19,6 @@ public class Oportunidades {
     @Enumerated(EnumType.STRING)
     private MomentoOportunidade momento;
     @ManyToOne
+    @JoinColumn(name = "culto_id")
     private Culto culto;
 }
