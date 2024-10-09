@@ -1,6 +1,6 @@
-package com.mava.ordemCulto.models;
+package com.mava.ordemCulto.domain.oportunidades;
 
-import com.mava.ordemCulto.models.enums.MomentoOportunidade;
+import com.mava.ordemCulto.domain.cultos.Culto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "oportunidades")
-public class OportunidadesModel {
+public class Oportunidades {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "oportunidades_seq")
     @SequenceGenerator(name = "oportunidades_seq", sequenceName = "oportunidades_seq", allocationSize = 1)
@@ -19,5 +19,5 @@ public class OportunidadesModel {
     @Enumerated(EnumType.STRING)
     private MomentoOportunidade momento;
     @ManyToOne
-    private CultoModel culto;
+    private Culto culto;
 }

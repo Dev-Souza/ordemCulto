@@ -1,6 +1,6 @@
-package com.mava.ordemCulto.models;
+package com.mava.ordemCulto.domain.equipe_intercessao;
 
-import com.mava.ordemCulto.models.enums.CargoEquipeIntercessao;
+import com.mava.ordemCulto.domain.cultos.Culto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "equipeIntercessao")
-public class EquipeIntercessaoModel {
+public class EquipeIntercessao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "equipe_intercessao_seq")
     @SequenceGenerator(name = "equipe_intercessao_seq", sequenceName = "equipe_intercessao_seq", allocationSize = 1)
@@ -19,5 +19,5 @@ public class EquipeIntercessaoModel {
     @Enumerated(EnumType.STRING)
     private CargoEquipeIntercessao cargo;
     @ManyToOne
-    private CultoModel culto;
+    private Culto culto;
 }

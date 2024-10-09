@@ -1,5 +1,6 @@
-package com.mava.ordemCulto.models;
+package com.mava.ordemCulto.domain.avisos;
 
+import com.mava.ordemCulto.domain.cultos.Culto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "avisos")
-public class AvisosModel {
+public class Avisos {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "avisos_seq")
     @SequenceGenerator(name = "avisos_seq", sequenceName = "avisos_seq", allocationSize = 1)
@@ -28,5 +29,5 @@ public class AvisosModel {
     private List<LocalDate> diasEvento;
 
     @ManyToOne
-    private CultoModel culto;
+    private Culto culto;
 }

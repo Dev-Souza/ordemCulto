@@ -1,4 +1,4 @@
-package com.mava.ordemCulto.models.enums;
+package com.mava.ordemCulto.domain.equipe_intercessao;
 
 public enum CargoEquipeIntercessao {
     OBREIRO,

@@ -1,4 +1,4 @@
-package com.mava.ordemCulto.models.enums;
+package com.mava.ordemCulto.domain.cultos;
 
 public enum TipoCulto {
     QUINTA_RESTAURACAO,

@@ -1,9 +1,10 @@
-package com.mava.ordemCulto.models;
+package com.mava.ordemCulto.domain.cultos;
 
-import com.mava.ordemCulto.models.enums.TipoCulto;
+import com.mava.ordemCulto.domain.avisos.Avisos;
+import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
+import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "cultos")
-public class CultoModel {
+public class Culto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cultos_seq")
     @SequenceGenerator(name = "cultos_seq", sequenceName = "cultos_seq", allocationSize = 1)
@@ -35,11 +36,11 @@ public class CultoModel {
     private String horaProsperar;
     //Relacionamento com a classe OportunidadesModel
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<OportunidadesModel> oportunidades = new ArrayList<>();
+    private List<Oportunidades> oportunidades = new ArrayList<>();
     //Relacionamento com a classe EquipeIntercessaoModel
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<EquipeIntercessaoModel> equipeIntercessao = new ArrayList<>();
+    private List<EquipeIntercessao> equipeIntercessao = new ArrayList<>();
     //Relacionamento com a classe AvisosModel
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<AvisosModel> avisos = new ArrayList<>();
+    private List<Avisos> avisos = new ArrayList<>();
 }
