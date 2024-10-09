@@ -34,13 +34,13 @@ public class Culto {
     private String dirigente;
     @NotNull
     private String horaProsperar;
-    //Relacionamento com a classe OportunidadesModel
+    //Relacionamento com a classe Oportunidades
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Oportunidades> oportunidades = new ArrayList<>();
-    //Relacionamento com a classe EquipeIntercessaoModel
+    //Relacionamento com a classe EquipeIntercessao
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<EquipeIntercessao> equipeIntercessao = new ArrayList<>();
-    //Relacionamento com a classe AvisosModel
+    //Relacionamento com a classe Avisos
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Avisos> avisos = new ArrayList<>();
 }
