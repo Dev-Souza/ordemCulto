@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.controllers;
 
-import com.mava.ordemCulto.models.CultoModel;
+import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.services.CultoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,25 +20,25 @@ public class CultoController {
 
     //CREATE
     @PostMapping
-    public ResponseEntity<CultoModel> createNewCulto(@Valid @RequestBody CultoModel cultoModel) {
-        return cultoService.create(cultoModel);
+    public ResponseEntity<Culto> createNewCulto(@Valid @RequestBody Culto culto) {
+        return cultoService.create(culto);
     }
 
     //GET ALL
     @GetMapping
-    public ResponseEntity<List<CultoModel>> getAllCultos(){
+    public ResponseEntity<List<Culto>> getAllCultos(){
         return cultoService.getAll();
     }
 
     //GET BY ID
     @GetMapping("{id}")
-    public ResponseEntity<CultoModel> getByIdCulto(@PathVariable("id") Integer id){
+    public ResponseEntity<Culto> getByIdCulto(@PathVariable("id") Integer id){
         return cultoService.getById(id);
     }
 
     //UPDATE
     @PutMapping("{id}")
-    public ResponseEntity<CultoModel> updateByIdCulto(@PathVariable("id") Integer id, @Valid @RequestBody CultoModel cultoAtualizado) {
+    public ResponseEntity<Culto> updateByIdCulto(@PathVariable("id") Integer id, @Valid @RequestBody Culto cultoAtualizado) {
         return cultoService.update(id, cultoAtualizado);
     }
 

@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.services;
 
-import com.mava.ordemCulto.models.CultoModel;
+import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -16,7 +15,7 @@ public class CultoService {
     private final CultoRepository cultoRepository;
 
     // Criar um culto
-    public ResponseEntity<CultoModel> create(CultoModel cultoModel) {
+    public ResponseEntity<Culto> create(Culto cultoModel) {
         // Caso meu cultoModel já venha com ID é porque já existe um culto cadastrado
         if (cultoModel.getId() != null) {
             return ResponseEntity
@@ -25,7 +24,7 @@ public class CultoService {
                     .body(null);
         }
         // Caso não venha com ID, salva um novo registro
-        CultoModel newCulto = cultoRepository.save(cultoModel);
+        Culto newCulto = cultoRepository.save(cultoModel);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("created", "Culto criado com sucesso!")
@@ -33,15 +32,15 @@ public class CultoService {
     }
 
     // Buscar todos os cultos
-    public ResponseEntity<List<CultoModel>> getAll() {
-        List<CultoModel> cultos = cultoRepository.findAll();
+    public ResponseEntity<List<Culto>> getAll() {
+        List<Culto> cultos = cultoRepository.findAll();
         return cultos.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(cultos);
     }
 
     // Buscar um culto em específico
-    public ResponseEntity<CultoModel> getById(Integer id) {
+    public ResponseEntity<Culto> getById(Integer id) {
         return cultoRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity
@@ -51,7 +50,7 @@ public class CultoService {
     }
 
     // Alterar o culto encontrado por ID
-    public ResponseEntity<CultoModel> update(Integer id, CultoModel cultoAtualizado) {
+    public ResponseEntity<Culto> update(Integer id, Culto cultoAtualizado) {
         return cultoRepository.findById(id)
                 .map(culto -> {
                     culto.setTituloCulto(cultoAtualizado.getTituloCulto());
