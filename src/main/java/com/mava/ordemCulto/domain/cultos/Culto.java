@@ -1,5 +1,6 @@
 package com.mava.ordemCulto.domain.cultos;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mava.ordemCulto.domain.avisos.Avisos;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
@@ -35,12 +36,15 @@ public class Culto {
     @NotNull
     private String horaProsperar;
     //Relacionamento com a classe Oportunidades
-    @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Oportunidades> oportunidades = new ArrayList<>();
     //Relacionamento com a classe EquipeIntercessao
-    @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<EquipeIntercessao> equipeIntercessao = new ArrayList<>();
     //Relacionamento com a classe Avisos
-    @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Avisos> avisos = new ArrayList<>();
 }

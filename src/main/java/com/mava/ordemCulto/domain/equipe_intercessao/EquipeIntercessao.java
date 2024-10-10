@@ -1,5 +1,7 @@
 package com.mava.ordemCulto.domain.equipe_intercessao;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mava.ordemCulto.domain.cultos.Culto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,5 +21,7 @@ public class EquipeIntercessao {
     @Enumerated(EnumType.STRING)
     private CargoEquipeIntercessao cargo;
     @ManyToOne
+    @JoinColumn(name = "culto_id")
+    @JsonBackReference
     private Culto culto;
 }

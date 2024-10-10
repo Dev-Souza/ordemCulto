@@ -1,5 +1,6 @@
 package com.mava.ordemCulto.domain.avisos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mava.ordemCulto.domain.cultos.Culto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,5 +30,6 @@ public class Avisos {
     private List<LocalDate> diasEvento;
 
     @ManyToOne
+    @JsonBackReference
     private Culto culto;
 }

@@ -1,5 +1,7 @@
 package com.mava.ordemCulto.domain.oportunidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mava.ordemCulto.domain.cultos.Culto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,5 +22,6 @@ public class Oportunidades {
     private MomentoOportunidade momento;
     @ManyToOne
     @JoinColumn(name = "culto_id")
+    @JsonBackReference
     private Culto culto;
 }
