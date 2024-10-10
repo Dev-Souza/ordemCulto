@@ -1,6 +1,7 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.services.CultoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,38 +14,40 @@ import java.util.List;
 @RestController
 @RequestMapping("/culto")
 @RequiredArgsConstructor
-@Validated // Aqui o @Validated é aplicado para validar todas as chamadas dentro desta classe
+@Validated
 public class CultoController {
 
     private final CultoService cultoService;
 
-    //CREATE
+    // CREATE
     @PostMapping
-    public ResponseEntity<Culto> createNewCulto(@Valid @RequestBody Culto culto) {
-        return cultoService.create(culto);
+    public ResponseEntity<Culto> createNewCulto(@Valid @RequestBody CultoDTO cultoDTO) {
+        return this.cultoService.create(cultoDTO);
     }
 
-    //GET ALL
+    // GET ALL
     @GetMapping
-    public ResponseEntity<List<Culto>> getAllCultos(){
+    public ResponseEntity<List<CultoDTO>> getAllCultos() {
         return cultoService.getAll();
     }
 
-    //GET BY ID
-    @GetMapping("{id}")
-    public ResponseEntity<Culto> getByIdCulto(@PathVariable("id") Integer id){
+    // GET BY ID
+    @GetMapping("/{id}") // Use a barra inicial para melhor prática de URL
+    public ResponseEntity<CultoDTO> getByIdCulto(@PathVariable("id") Integer id) {
         return cultoService.getById(id);
     }
 
-    //UPDATE
-    @PutMapping("{id}")
-    public ResponseEntity<Culto> updateByIdCulto(@PathVariable("id") Integer id, @Valid @RequestBody Culto cultoAtualizado) {
-        return cultoService.update(id, cultoAtualizado);
+    // UPDATE
+    @PutMapping("/{id}")
+    public ResponseEntity<CultoDTO> updateByIdCulto(
+            @PathVariable("id") Integer id,
+            @Valid @RequestBody CultoDTO cultoDTOAtualizado) {
+        return cultoService.update(id, cultoDTOAtualizado);
     }
 
-    //DELETE
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteByIdCulto(@PathVariable("id") Integer id){
+    // DELETE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteByIdCulto(@PathVariable("id") Integer id) {
         return cultoService.delete(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,23 +9,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class CultoService {
     private final CultoRepository cultoRepository;
 
+    // Converter DTO para Entity
+    private Culto paraEntidade(CultoDTO dto) {
+        Culto culto = new Culto();
+        culto.setId(dto.id());
+        culto.setTituloCulto(dto.tituloCulto());
+        culto.setTipoCulto(dto.tipoCulto());
+        culto.setDataCulto(dto.dataCulto());
+        culto.setDirigente(dto.dirigente());
+        culto.setHoraProsperar(dto.horaProsperar());
+        culto.setOportunidades(dto.oportunidades());
+        culto.setEquipeIntercessao(dto.equipeIntercessao());
+        culto.setAvisos(dto.avisos());
+        return culto;
+    }
+
+    // Converter Entity para DTO
+    private CultoDTO paraDTO(Culto culto) {
+        return new CultoDTO(
+                culto.getId(),
+                culto.getTituloCulto(),
+                culto.getTipoCulto(),
+                culto.getDataCulto(),
+                culto.getDirigente(),
+                culto.getHoraProsperar(),
+                culto.getOportunidades(),
+                culto.getEquipeIntercessao(),
+                culto.getAvisos()
+        );
+    }
+
     // Criar um culto
-    public ResponseEntity<Culto> create(Culto cultoModel) {
-        // Caso meu cultoModel já venha com ID é porque já existe um culto cadastrado
-        if (cultoModel.getId() != null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .header("Error", "Culto já existe")
-                    .body(null);
-        }
-        // Caso não venha com ID, salva um novo registro
-        Culto newCulto = cultoRepository.save(cultoModel);
+    public ResponseEntity<Culto> create(CultoDTO cultoDTO) {
+        Culto newCulto = cultoRepository.save(paraEntidade(cultoDTO));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("created", "Culto criado com sucesso!")
@@ -32,17 +56,21 @@ public class CultoService {
     }
 
     // Buscar todos os cultos
-    public ResponseEntity<List<Culto>> getAll() {
+    public ResponseEntity<List<CultoDTO>> getAll() {
         List<Culto> cultos = cultoRepository.findAll();
-        return cultos.isEmpty()
+        List<CultoDTO> cultoDTOs = cultos.stream()
+                .map(this::paraDTO)
+                .collect(Collectors.toList());
+
+        return cultoDTOs.isEmpty()
                 ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(cultos);
+                : ResponseEntity.ok(cultoDTOs);
     }
 
-    // Buscar um culto em específico
-    public ResponseEntity<Culto> getById(Integer id) {
+    // Buscar um culto específico
+    public ResponseEntity<CultoDTO> getById(Integer id) {
         return cultoRepository.findById(id)
-                .map(ResponseEntity::ok)
+                .map(culto -> ResponseEntity.ok(paraDTO(culto)))
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .header("error", "Nenhum culto encontrado")
@@ -50,31 +78,31 @@ public class CultoService {
     }
 
     // Alterar o culto encontrado por ID
-    public ResponseEntity<Culto> update(Integer id, Culto cultoAtualizado) {
+    public ResponseEntity<CultoDTO> update(Integer id, CultoDTO cultoDTOAtualizado) {
         return cultoRepository.findById(id)
                 .map(culto -> {
-                    culto.setTituloCulto(cultoAtualizado.getTituloCulto());
-                    culto.setTipoCulto(cultoAtualizado.getTipoCulto());
-                    culto.setDataCulto(cultoAtualizado.getDataCulto());
-                    culto.setDirigente(cultoAtualizado.getDirigente());
-                    culto.setHoraProsperar(cultoAtualizado.getHoraProsperar());
+                    culto.setTituloCulto(cultoDTOAtualizado.tituloCulto());
+                    culto.setTipoCulto(cultoDTOAtualizado.tipoCulto());
+                    culto.setDataCulto(cultoDTOAtualizado.dataCulto());
+                    culto.setDirigente(cultoDTOAtualizado.dirigente());
+                    culto.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
 
-                    if (cultoAtualizado.getAvisos() != null) {
-                        culto.setAvisos(cultoAtualizado.getAvisos());
+                    if (cultoDTOAtualizado.avisos() != null) {
+                        culto.setAvisos(cultoDTOAtualizado.avisos());
                     }
 
-                    if (cultoAtualizado.getEquipeIntercessao() != null) {
-                        culto.setEquipeIntercessao(cultoAtualizado.getEquipeIntercessao());
+                    if (cultoDTOAtualizado.equipeIntercessao() != null) {
+                        culto.setEquipeIntercessao(cultoDTOAtualizado.equipeIntercessao());
                     }
 
-                    if (cultoAtualizado.getOportunidades() != null) {
-                        culto.setOportunidades(cultoAtualizado.getOportunidades());
+                    if (cultoDTOAtualizado.oportunidades() != null) {
+                        culto.setOportunidades(cultoDTOAtualizado.oportunidades());
                     }
 
                     cultoRepository.save(culto);
                     return ResponseEntity.ok()
                             .header("update", "Culto alterado com sucesso!")
-                            .body(culto);
+                            .body(paraDTO(culto));
                 })
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
