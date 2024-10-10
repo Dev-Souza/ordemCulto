@@ -3,8 +3,6 @@ package com.mava.ordemCulto.domain.cultos;
 import com.mava.ordemCulto.domain.avisos.Avisos;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
