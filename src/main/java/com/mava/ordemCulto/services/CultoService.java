@@ -108,29 +108,38 @@ public class CultoService {
                     culto.setDirigente(cultoDTOAtualizado.dirigente());
                     culto.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
 
+                    // Atualizando avisos
                     if (cultoDTOAtualizado.avisos() != null) {
-                        //Adicionando o ID do culto nos registros
                         cultoDTOAtualizado.avisos().forEach(aviso -> {
                             aviso.setCultoId(culto.getId());
-                            avisosRepository.save(aviso);
+                            // Verifica se o aviso já existe no banco
+                            if (!avisosRepository.buscarRegistroExistente(aviso.getCultoId())) {
+                                avisosRepository.save(aviso); // Salva apenas se não existir
+                            }
                         });
                         culto.setAvisos(cultoDTOAtualizado.avisos());
                     }
 
+                    // Atualizando equipe de intercessão
                     if (cultoDTOAtualizado.equipeIntercessao() != null) {
-                        //Adicionando o ID do culto nos registros
                         cultoDTOAtualizado.equipeIntercessao().forEach(intercessor -> {
                             intercessor.setCultoId(culto.getId());
-                            equipeIntercessaoRepository.save(intercessor);
+                            // Verifica se o intercessor já existe no banco
+                            if (!equipeIntercessaoRepository.buscarRegistroExistente(intercessor.getCultoId())) {
+                                equipeIntercessaoRepository.save(intercessor); // Salva apenas se não existir
+                            }
                         });
                         culto.setEquipeIntercessao(cultoDTOAtualizado.equipeIntercessao());
                     }
 
+                    // Atualizando oportunidades
                     if (cultoDTOAtualizado.oportunidades() != null) {
-                        //Adicionando o ID do culto nos registros
                         cultoDTOAtualizado.oportunidades().forEach(oportunidade -> {
                             oportunidade.setCultoId(culto.getId());
-                            oportunidadesRepository.save(oportunidade);
+                            // Verifica se a oportunidade já existe no banco
+                            if (!oportunidadesRepository.buscarRegistroExistente(oportunidade.getCultoId())) {
+                                oportunidadesRepository.save(oportunidade); // Salva apenas se não existir
+                            }
                         });
                         culto.setOportunidades(cultoDTOAtualizado.oportunidades());
                     }
