@@ -2,7 +2,10 @@ package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.domain.cultos.CultoDTO;
+import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;
+import com.mava.ordemCulto.repositories.EquipeIntercessaoRepository;
+import com.mava.ordemCulto.repositories.OportunidadesRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CultoService {
     private final CultoRepository cultoRepository;
+    private final AvisosRepository avisosRepository;
+    private final OportunidadesRepository oportunidadesRepository;
+    private final EquipeIntercessaoRepository equipeIntercessaoRepository;
 
     // Converter DTO para Entity
     private Culto paraEntidade(CultoDTO dto) {
@@ -48,7 +54,22 @@ public class CultoService {
 
     // Criar um culto
     public ResponseEntity<Culto> create(CultoDTO cultoDTO) {
+        //Salvar culto
         Culto newCulto = cultoRepository.save(paraEntidade(cultoDTO));
+
+        //Atualização das classes relacionadas
+        cultoDTO.oportunidades().forEach(oportunidade -> {
+            oportunidade.setCultoId(newCulto.getId());
+            oportunidadesRepository.save(oportunidade);
+        });
+        cultoDTO.equipeIntercessao().forEach(intercessor -> {
+            intercessor.setCultoId(newCulto.getId());
+            equipeIntercessaoRepository.save(intercessor);
+        });
+        cultoDTO.avisos().forEach(aviso -> {
+            aviso.setCultoId(newCulto.getId());
+            avisosRepository.save(aviso);
+        });
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("created", "Culto criado com sucesso!")
@@ -88,14 +109,29 @@ public class CultoService {
                     culto.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
 
                     if (cultoDTOAtualizado.avisos() != null) {
+                        //Adicionando o ID do culto nos registros
+                        cultoDTOAtualizado.avisos().forEach(aviso -> {
+                            aviso.setCultoId(culto.getId());
+                            avisosRepository.save(aviso);
+                        });
                         culto.setAvisos(cultoDTOAtualizado.avisos());
                     }
 
                     if (cultoDTOAtualizado.equipeIntercessao() != null) {
+                        //Adicionando o ID do culto nos registros
+                        cultoDTOAtualizado.equipeIntercessao().forEach(intercessor -> {
+                            intercessor.setCultoId(culto.getId());
+                            equipeIntercessaoRepository.save(intercessor);
+                        });
                         culto.setEquipeIntercessao(cultoDTOAtualizado.equipeIntercessao());
                     }
 
                     if (cultoDTOAtualizado.oportunidades() != null) {
+                        //Adicionando o ID do culto nos registros
+                        cultoDTOAtualizado.oportunidades().forEach(oportunidade -> {
+                            oportunidade.setCultoId(culto.getId());
+                            oportunidadesRepository.save(oportunidade);
+                        });
                         culto.setOportunidades(cultoDTOAtualizado.oportunidades());
                     }
 

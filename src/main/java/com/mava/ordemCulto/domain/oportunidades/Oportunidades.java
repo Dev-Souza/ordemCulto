@@ -22,6 +22,18 @@ public class Oportunidades {
     private MomentoOportunidade momento;
     @ManyToOne
     @JoinColumn(name = "culto_id")
-    @JsonBackReference
+    @JsonBackReference // Referência inversa não será serializada
     private Culto culto;
+
+    @Transient
+    @JsonIgnore //Para ignorar o campo durante a serialização
+    private Integer cultoId;
+
+    public void setCultoId(Integer cultoId){
+        this.cultoId = cultoId;
+        if (cultoId != null) {
+            this.culto = new Culto();
+            this.culto.setId(cultoId);
+        }
+    }
 }
