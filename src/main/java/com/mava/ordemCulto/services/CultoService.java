@@ -2,6 +2,7 @@ package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.domain.cultos.CultoDTO;
+import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.EquipeIntercessaoRepository;
@@ -100,59 +101,50 @@ public class CultoService {
 
     // Alterar o culto encontrado por ID
     public ResponseEntity<CultoDTO> update(Integer id, CultoDTO cultoDTOAtualizado) {
-        return cultoRepository.findById(id)
-                .map(culto -> {
-                    culto.setTituloCulto(cultoDTOAtualizado.tituloCulto());
-                    culto.setTipoCulto(cultoDTOAtualizado.tipoCulto());
-                    culto.setDataCulto(cultoDTOAtualizado.dataCulto());
-                    culto.setDirigente(cultoDTOAtualizado.dirigente());
-                    culto.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
+        // Buscando o culto pelo ID
+        Culto cultoExistente = cultoRepository.findById(id).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
 
-                    // Atualizando avisos
-                    if (cultoDTOAtualizado.avisos() != null) {
-                        cultoDTOAtualizado.avisos().forEach(aviso -> {
-                            aviso.setCultoId(culto.getId());
-                            // Verifica se o aviso já existe no banco
-                            if (!avisosRepository.buscarRegistroExistente(aviso.getCultoId())) {
-                                avisosRepository.save(aviso); // Salva apenas se não existir
-                            }
-                        });
-                        culto.setAvisos(cultoDTOAtualizado.avisos());
-                    }
+        // Atualizando os dados do culto
+        cultoExistente.setTituloCulto(cultoDTOAtualizado.tituloCulto());
+        cultoExistente.setTipoCulto(cultoDTOAtualizado.tipoCulto());
+        cultoExistente.setDataCulto(cultoDTOAtualizado.dataCulto());
+        cultoExistente.setDirigente(cultoDTOAtualizado.dirigente());
+        cultoExistente.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
 
-                    // Atualizando equipe de intercessão
-                    if (cultoDTOAtualizado.equipeIntercessao() != null) {
-                        cultoDTOAtualizado.equipeIntercessao().forEach(intercessor -> {
-                            intercessor.setCultoId(culto.getId());
-                            // Verifica se o intercessor já existe no banco
-                            if (!equipeIntercessaoRepository.buscarRegistroExistente(intercessor.getCultoId())) {
-                                equipeIntercessaoRepository.save(intercessor); // Salva apenas se não existir
-                            }
-                        });
-                        culto.setEquipeIntercessao(cultoDTOAtualizado.equipeIntercessao());
-                    }
-
-                    // Atualizando oportunidades
-                    if (cultoDTOAtualizado.oportunidades() != null) {
-                        cultoDTOAtualizado.oportunidades().forEach(oportunidade -> {
-                            oportunidade.setCultoId(culto.getId());
-                            // Verifica se a oportunidade já existe no banco
-                            if (!oportunidadesRepository.buscarRegistroExistente(oportunidade.getCultoId())) {
-                                oportunidadesRepository.save(oportunidade); // Salva apenas se não existir
-                            }
-                        });
-                        culto.setOportunidades(cultoDTOAtualizado.oportunidades());
-                    }
-
-                    cultoRepository.save(culto);
-                    return ResponseEntity.ok()
-                            .header("update", "Culto alterado com sucesso!")
-                            .body(paraDTO(culto));
-                })
-                .orElseGet(() -> ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .header("error", "Culto não existe!")
-                        .build());
+        // Atualizando as oportunidades
+        if (cultoDTOAtualizado.oportunidades() != null && !cultoDTOAtualizado.oportunidades().isEmpty()) {
+            // Remover as oportunidades antigas
+            oportunidadesRepository.deleteByCultoId(id);
+            // Adicionando as novas oportunidades
+            cultoDTOAtualizado.oportunidades().forEach(oportunidade -> {
+                oportunidade.setCultoId(id);
+                oportunidadesRepository.save(oportunidade);
+            });
+        }
+        // Atualizando os avisos
+        if (cultoDTOAtualizado.avisos() != null && !cultoDTOAtualizado.avisos().isEmpty()) {
+            // Remover os avisos antigos
+            avisosRepository.deleteByCultoId(id);
+            // Adicionando os novos avisos
+            cultoDTOAtualizado.avisos().forEach(aviso -> {
+                aviso.setCultoId(id);
+                avisosRepository.save(aviso);
+            });
+        }
+        // Atualizando a equipe de intercessão
+        if (cultoDTOAtualizado.equipeIntercessao() != null && !cultoDTOAtualizado.equipeIntercessao().isEmpty()) {
+            // Remover a equipe de intercessão antiga
+            equipeIntercessaoRepository.deleteByCultoId(id);
+            // Adicionando a nova equipe de intercessão
+            cultoDTOAtualizado.equipeIntercessao().forEach(intercessor -> {
+                intercessor.setCultoId(id);
+                equipeIntercessaoRepository.save(intercessor);
+            });
+        }
+        // Salvando o culto atualizado
+        cultoRepository.save(cultoExistente);
+        // Retornando o culto atualizado como DTO
+        return ResponseEntity.ok(cultoDTOAtualizado);
     }
 
     // Deletar o culto buscado por ID
