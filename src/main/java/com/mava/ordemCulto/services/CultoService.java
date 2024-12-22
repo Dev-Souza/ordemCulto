@@ -111,36 +111,6 @@ public class CultoService {
         cultoExistente.setDirigente(cultoDTOAtualizado.dirigente());
         cultoExistente.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
 
-        // Atualizando as oportunidades
-        if (cultoDTOAtualizado.oportunidades() != null && !cultoDTOAtualizado.oportunidades().isEmpty()) {
-            // Remover as oportunidades antigas
-            oportunidadesRepository.deleteByCultoId(id);
-            // Adicionando as novas oportunidades
-            cultoDTOAtualizado.oportunidades().forEach(oportunidade -> {
-                oportunidade.setCultoId(id);
-                oportunidadesRepository.save(oportunidade);
-            });
-        }
-        // Atualizando os avisos
-        if (cultoDTOAtualizado.avisos() != null && !cultoDTOAtualizado.avisos().isEmpty()) {
-            // Remover os avisos antigos
-            avisosRepository.deleteByCultoId(id);
-            // Adicionando os novos avisos
-            cultoDTOAtualizado.avisos().forEach(aviso -> {
-                aviso.setCultoId(id);
-                avisosRepository.save(aviso);
-            });
-        }
-        // Atualizando a equipe de intercessão
-        if (cultoDTOAtualizado.equipeIntercessao() != null && !cultoDTOAtualizado.equipeIntercessao().isEmpty()) {
-            // Remover a equipe de intercessão antiga
-            equipeIntercessaoRepository.deleteByCultoId(id);
-            // Adicionando a nova equipe de intercessão
-            cultoDTOAtualizado.equipeIntercessao().forEach(intercessor -> {
-                intercessor.setCultoId(id);
-                equipeIntercessaoRepository.save(intercessor);
-            });
-        }
         // Salvando o culto atualizado
         cultoRepository.save(cultoExistente);
         // Retornando o culto atualizado como DTO
