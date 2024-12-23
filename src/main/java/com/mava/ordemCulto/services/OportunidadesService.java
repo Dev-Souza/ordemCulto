@@ -1,7 +1,6 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeDTO;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import com.mava.ordemCulto.repositories.CultoRepository;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class OportunidadeService {
+public class OportunidadesService {
     private final CultoRepository cultoRepository;
     private final OportunidadesRepository oportunidadesRepository;
 

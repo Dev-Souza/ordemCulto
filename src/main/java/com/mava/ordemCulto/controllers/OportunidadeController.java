@@ -1,11 +1,9 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeDTO;
-import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
-import com.mava.ordemCulto.services.OportunidadeService;
+import com.mava.ordemCulto.services.OportunidadesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class OportunidadeController {
-    private final OportunidadeService oportunidadeService;
+    private final OportunidadesService oportunidadeService;
     private final OportunidadesRepository oportunidadesRepository;
 
     //ADD Oportunidade In Culto
