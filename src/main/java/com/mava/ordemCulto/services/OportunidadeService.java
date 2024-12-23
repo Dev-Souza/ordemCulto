@@ -1,14 +1,11 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeDTO;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +15,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class OportunidadeService {
-    private final OportunidadesRepository oportunidadesRepository;
     private final CultoRepository cultoRepository;
-    private final CultoService cultoService;
+    private final OportunidadesRepository oportunidadesRepository;
 
     //ADD Oportunidade In Culto
     public ResponseEntity<Culto> addOportunidade(Integer idCulto, OportunidadeDTO newOportunidade) {
@@ -56,5 +52,15 @@ public class OportunidadeService {
 
         // Retorna a lista de oportunidades
         return ResponseEntity.ok(oportunidades);
+    }
+
+    //UPDATE OPORTUNIDADE
+    public ResponseEntity<OportunidadeDTO> updateOportunidade(Integer idOportunidade, OportunidadeDTO oportunidadeUpdated) {
+        Oportunidades oportunidadeBuscada = oportunidadesRepository.findById(idOportunidade).orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+        oportunidadeBuscada.setNomePessoa(oportunidadeUpdated.nomePessoa());
+        oportunidadeBuscada.setMomento(oportunidadeUpdated.momentoOportunidade());
+        oportunidadeBuscada.setCultoId(oportunidadeUpdated.cultoId());
+        oportunidadesRepository.save(oportunidadeBuscada);
+        return ResponseEntity.ok(oportunidadeUpdated);
     }
 }

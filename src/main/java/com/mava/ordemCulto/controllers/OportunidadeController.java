@@ -27,9 +27,10 @@ public class OportunidadeController {
     @GetMapping("/{idCulto}")
     public ResponseEntity<List<OportunidadeDTO>> getAllPorUmCulto(@PathVariable("idCulto") Integer idCulto) { return oportunidadeService.getAllOportunidadesPorUmCulto(idCulto);}
 
-    //GET BY ID Oportunidade DE UM CULTO
-
     //UPDATE
+    @PutMapping("/{idOportunidade}")
+    public ResponseEntity<OportunidadeDTO> updateOportunidade(@PathVariable("idOportunidade") Integer idOportunidade, @RequestBody OportunidadeDTO oportunidadeUpdated) {return oportunidadeService.updateOportunidade(idOportunidade, oportunidadeUpdated);}
+
 
     //DELETE
 }
