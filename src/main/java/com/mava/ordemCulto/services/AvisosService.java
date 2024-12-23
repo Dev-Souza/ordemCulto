@@ -61,14 +61,7 @@ public class AvisosService {
         //Setar os avisos para fazer o return
         //Converte os avisos para DTO
         List<AvisosDTO> avisos = cultoExistente.getAvisos().stream()
-                .map(aviso -> new AvisosDTO(
-                        aviso.getId(),
-                        aviso.getNomeAviso(),
-                        aviso.getReferente(),
-                        aviso.getHorarioEvento(),
-                        aviso.getDiasEvento(),
-                        idCulto
-                ))
+                .map(aviso -> paraDTO(aviso))
                 .collect(Collectors.toList());
 
         //Retorna a lista de Avisos
