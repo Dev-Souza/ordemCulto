@@ -23,7 +23,7 @@ public class EquipeIntercessaoService {
         EquipeIntercessao equipeIntercessao = new EquipeIntercessao();
         equipeIntercessao.setNomeObreiro(equipeIntercessaoDTO.nomeObreiro());
         equipeIntercessao.setCargo(equipeIntercessaoDTO.cargoEquipeIntercessao());
-        equipeIntercessao.setId(idCulto);
+        equipeIntercessao.setCultoId(idCulto);
         return equipeIntercessao;
     }
 
