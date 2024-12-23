@@ -34,7 +34,7 @@ public class CultoController {
     // GET BY ID
     @GetMapping("/{id}") // Use a barra inicial para melhor prática de URL
     public ResponseEntity<CultoDTO> getByIdCulto(@PathVariable("id") Integer id) {
-        return cultoService.getById(id);
+        return cultoService.getByIdCulto(id);
     }
 
     // UPDATE
