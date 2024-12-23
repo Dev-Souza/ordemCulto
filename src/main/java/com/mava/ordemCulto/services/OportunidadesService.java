@@ -29,22 +29,27 @@ public class OportunidadesService {
         );
     }
 
+    private Oportunidades paraEntidade(OportunidadeDTO oportunidadeDTO, Integer idCulto) {
+        Oportunidades oportunidades = new Oportunidades();
+        oportunidades.setNomePessoa(oportunidadeDTO.nomePessoa());
+        oportunidades.setMomento(oportunidadeDTO.momentoOportunidade());
+        oportunidades.setCultoId(idCulto);
+        return oportunidades;
+    }
+
     //ADD Oportunidade In Culto
     public ResponseEntity<Culto> addOportunidade(Integer idCulto, OportunidadeDTO newOportunidade) {
         //Buscando culto existente
-        Culto culto = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
-        //Transformando a minha nova oportunidadeDTO em oportunidade
-        Oportunidades novaOportunidade = new Oportunidades();
-        novaOportunidade.setNomePessoa(newOportunidade.nomePessoa());
-        novaOportunidade.setMomento(newOportunidade.momentoOportunidade());
-        novaOportunidade.setCultoId(idCulto);
+        Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
+        //Transformando a minha newOportunidade em entidade
+        Oportunidades novaOportunidade = paraEntidade(newOportunidade, idCulto);
 
         //Adicionando essa oportunidade com as demais
-        culto.getOportunidades().add(novaOportunidade);
-        //Salvando este culto
-        cultoRepository.save(culto);
+        cultoBuscado.getOportunidades().add(novaOportunidade);
+        //Salvando este culto com a nova oportunidade
+        cultoRepository.save(cultoBuscado);
 
-        return ResponseEntity.ok(culto);
+        return ResponseEntity.ok(cultoBuscado);
     }
 
     //GET ALL Oportunidades por um culto
