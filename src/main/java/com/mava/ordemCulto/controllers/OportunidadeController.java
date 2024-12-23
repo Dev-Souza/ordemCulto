@@ -2,7 +2,6 @@ package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeDTO;
-import com.mava.ordemCulto.repositories.OportunidadesRepository;
 import com.mava.ordemCulto.services.OportunidadesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,10 @@ import java.util.List;
 @Validated
 public class OportunidadeController {
     private final OportunidadesService oportunidadeService;
-    private final OportunidadesRepository oportunidadesRepository;
 
     //ADD Oportunidade In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<Culto> addNewOportunidades(@PathVariable("idCulto") Integer idCulto, @RequestBody OportunidadeDTO newOportunidade) {return oportunidadeService.addOportunidade(idCulto, newOportunidade);}
+    public ResponseEntity<Culto> addNewOportunidade(@PathVariable("idCulto") Integer idCulto, @RequestBody OportunidadeDTO newOportunidade) {return oportunidadeService.addOportunidade(idCulto, newOportunidade);}
 
     //GET ALL Oportunidades DE UM CULTO
     @GetMapping("/{idCulto}")
@@ -33,5 +31,5 @@ public class OportunidadeController {
 
     //DELETE
     @DeleteMapping("/{idOportunidade}")
-    public void deleteOportunidade(@PathVariable("idOportunidade") Integer idOportunidade) {oportunidadeService.deleteOportunidade(idOportunidade);}
+    public ResponseEntity<Void> deleteOportunidade(@PathVariable("idOportunidade") Integer idOportunidade) {return oportunidadeService.deleteOportunidade(idOportunidade);}
 }

@@ -70,12 +70,13 @@ public class OportunidadesService {
         return ResponseEntity.ok(oportunidades);
     }
 
+    //GET BY ID OPORTUNIDADE
     public ResponseEntity<OportunidadeDTO> getByIdOportunidade(Integer idOportunidade) {
         return oportunidadesRepository.findById(idOportunidade)
                 .map(oportunidades -> ResponseEntity.ok(paraDTO(oportunidades)))
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
-                        .header("error", "Nenhuma oportunidade encontrada")
+                        .header("error", "Nenhuma oportunidade encontrada!")
                         .build());
     }
 
@@ -86,7 +87,7 @@ public class OportunidadesService {
         oportunidadeBuscada.setMomento(oportunidadeUpdated.momentoOportunidade());
         oportunidadeBuscada.setCultoId(oportunidadeUpdated.cultoId());
         oportunidadesRepository.save(oportunidadeBuscada);
-        return ResponseEntity.ok(oportunidadeUpdated);
+        return ResponseEntity.ok(paraDTO(oportunidadeBuscada));
     }
 
     //DELETE OPORTUNIDADE
