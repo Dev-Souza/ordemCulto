@@ -4,6 +4,7 @@ import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeDTO;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
+import com.mava.ordemCulto.repositories.OportunidadesRepository;
 import com.mava.ordemCulto.services.OportunidadeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 @Validated
 public class OportunidadeController {
     private final OportunidadeService oportunidadeService;
+    private final OportunidadesRepository oportunidadesRepository;
 
     //ADD Oportunidade In Culto
     @PostMapping("/{idCulto}")
@@ -31,6 +33,7 @@ public class OportunidadeController {
     @PutMapping("/{idOportunidade}")
     public ResponseEntity<OportunidadeDTO> updateOportunidade(@PathVariable("idOportunidade") Integer idOportunidade, @RequestBody OportunidadeDTO oportunidadeUpdated) {return oportunidadeService.updateOportunidade(idOportunidade, oportunidadeUpdated);}
 
-
     //DELETE
+    @DeleteMapping("/{idOportunidade}")
+    public void deleteOportunidade(@PathVariable("idOportunidade") Integer idOportunidade) {oportunidadeService.deleteOportunidade(idOportunidade);}
 }

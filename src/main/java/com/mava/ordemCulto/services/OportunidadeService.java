@@ -1,11 +1,13 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeDTO;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,16 @@ import java.util.stream.Collectors;
 public class OportunidadeService {
     private final CultoRepository cultoRepository;
     private final OportunidadesRepository oportunidadesRepository;
+
+    // Converter Entity para DTO
+    private OportunidadeDTO paraDTO(Oportunidades oportunidades) {
+        return new OportunidadeDTO(
+                oportunidades.getId(),
+                oportunidades.getNomePessoa(),
+                oportunidades.getMomento(),
+                oportunidades.getCultoId()
+        );
+    }
 
     //ADD Oportunidade In Culto
     public ResponseEntity<Culto> addOportunidade(Integer idCulto, OportunidadeDTO newOportunidade) {
@@ -54,6 +66,15 @@ public class OportunidadeService {
         return ResponseEntity.ok(oportunidades);
     }
 
+    public ResponseEntity<OportunidadeDTO> getByIdOportunidade(Integer idOportunidade) {
+        return oportunidadesRepository.findById(idOportunidade)
+                .map(oportunidades -> ResponseEntity.ok(paraDTO(oportunidades)))
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .header("error", "Nenhuma oportunidade encontrada")
+                        .build());
+    }
+
     //UPDATE OPORTUNIDADE
     public ResponseEntity<OportunidadeDTO> updateOportunidade(Integer idOportunidade, OportunidadeDTO oportunidadeUpdated) {
         Oportunidades oportunidadeBuscada = oportunidadesRepository.findById(idOportunidade).orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
@@ -62,5 +83,12 @@ public class OportunidadeService {
         oportunidadeBuscada.setCultoId(oportunidadeUpdated.cultoId());
         oportunidadesRepository.save(oportunidadeBuscada);
         return ResponseEntity.ok(oportunidadeUpdated);
+    }
+
+    //DELETE OPORTUNIDADE
+    public ResponseEntity<Void> deleteOportunidade(Integer idOportunidade) {
+        ResponseEntity<OportunidadeDTO> oportunidadeEncontrada = getByIdOportunidade(idOportunidade);
+        oportunidadesRepository.deleteById(idOportunidade);
+        return ResponseEntity.noContent().build();
     }
 }
