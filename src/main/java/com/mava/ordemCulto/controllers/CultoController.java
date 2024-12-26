@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -55,8 +54,9 @@ public class CultoController {
 
     // FILTRAGEM POR DATA
     @PostMapping("/filtro")
-    public ResponseEntity<List<Culto>> filtrarCultosPorData(@Valid @RequestBody FiltrarCultoPorData filtro) {
-        List<Culto> cultos = cultoService.getCultoByData(filtro.getDataInicial(), filtro.getDataFinal());
-        return ResponseEntity.ok(cultos);
-    }
+    public ResponseEntity<List<Culto>> filtrarCultosPorData(@Valid @RequestBody FiltrarCultoPorData filtro) {return cultoService.getCultoByData(filtro.getDataInicial(), filtro.getDataFinal());}
+
+    //BUSCAR CULTOS RECENTES
+    @GetMapping("/cultosRecentes")
+    public ResponseEntity<List<Culto>> getCultosRecentes() {return cultoService.getAllCultosRecentes();}
 }

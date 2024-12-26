@@ -126,10 +126,17 @@ public class CultoService {
     }
 
     // Filtragem de data de culto
-    public List<Culto> getCultoByData(LocalDate dataInicial, LocalDate dataFinal) {
+    public ResponseEntity<List<Culto>> getCultoByData(LocalDate dataInicial, LocalDate dataFinal) {
         if (dataInicial.isAfter(dataFinal)) {
             throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
         }
-        return cultoRepository.findByDataCultoBetween(dataInicial, dataFinal);
+        List<Culto> listaCultos = cultoRepository.findByDataCultoBetween(dataInicial, dataFinal);
+        return ResponseEntity.ok(listaCultos);
+    }
+
+    //Buscar datas mais recentes
+    public ResponseEntity<List<Culto>> getAllCultosRecentes() {
+        List<Culto> cultosFiltrados = cultoRepository.findAllByOrderByDataCultoDesc();
+        return ResponseEntity.ok(cultosFiltrados);
     }
 }
