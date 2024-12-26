@@ -2,6 +2,7 @@ package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.domain.cultos.CultoDTO;
+import com.mava.ordemCulto.domain.cultos.FiltrarCultoPorData;
 import com.mava.ordemCulto.services.CultoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -49,5 +51,12 @@ public class CultoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteByIdCulto(@PathVariable("id") Integer id) {
         return cultoService.delete(id);
+    }
+
+    // FILTRAGEM POR DATA
+    @PostMapping("/filtro")
+    public ResponseEntity<List<Culto>> filtrarCultosPorData(@Valid @RequestBody FiltrarCultoPorData filtro) {
+        List<Culto> cultos = cultoService.getCultoByData(filtro.getDataInicial(), filtro.getDataFinal());
+        return ResponseEntity.ok(cultos);
     }
 }

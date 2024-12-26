@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,5 +123,13 @@ public class CultoService {
         ResponseEntity<CultoDTO> cultoBuscado = getByIdCulto(id);
         cultoRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Filtragem de data de culto
+    public List<Culto> getCultoByData(LocalDate dataInicial, LocalDate dataFinal) {
+        if (dataInicial.isAfter(dataFinal)) {
+            throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
+        }
+        return cultoRepository.findByDataCultoBetween(dataInicial, dataFinal);
     }
 }
