@@ -4,6 +4,7 @@ import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.domain.cultos.CultoDTO;
 import com.mava.ordemCulto.domain.cultos.FiltrarCultoPorData;
 import com.mava.ordemCulto.services.CultoService;
+import com.mava.ordemCulto.services.JasperReportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CultoController {
 
     private final CultoService cultoService;
+    private final JasperReportService jasperReportService;
 
     // CREATE
     @PostMapping
@@ -59,4 +61,9 @@ public class CultoController {
     //BUSCAR CULTOS RECENTES
     @GetMapping("/cultosRecentes")
     public ResponseEntity<List<Culto>> getCultosRecentes() {return cultoService.getAllCultosRecentes();}
+
+    @PostMapping("/gerarPDF")
+    public void gerarPDF(@RequestBody Culto culto){
+        this.jasperReportService.gerar(culto);
+    }
 }

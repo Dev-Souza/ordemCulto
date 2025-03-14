@@ -1,6 +1,5 @@
 package com.mava.ordemCulto.domain.cultos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mava.ordemCulto.domain.avisos.Avisos;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
