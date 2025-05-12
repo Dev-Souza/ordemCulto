@@ -112,6 +112,20 @@ public class CultoService {
         cultoExistente.setDirigente(cultoDTOAtualizado.dirigente());
         cultoExistente.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
 
+        //Salvando alterações nas outras tabelas de relacionamento
+        cultoDTOAtualizado.oportunidades().forEach(oportunidade -> {
+            oportunidade.setCultoId(cultoExistente.getId());
+            oportunidadesRepository.save(oportunidade);
+        });
+        cultoDTOAtualizado.equipeIntercessao().forEach(intercessor -> {
+            intercessor.setCultoId(cultoExistente.getId());
+            equipeIntercessaoRepository.save(intercessor);
+        });
+        cultoDTOAtualizado.avisos().forEach(aviso -> {
+            aviso.setCultoId(cultoExistente.getId());
+            avisosRepository.save(aviso);
+        });
+
         // Salvando o culto atualizado
         cultoRepository.save(cultoExistente);
         // Retornando o culto atualizado como DTO
