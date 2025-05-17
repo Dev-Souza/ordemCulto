@@ -75,4 +75,7 @@ public class CultoController {
     public void gerarPDF(@RequestBody Culto culto){
         this.jasperReportService.gerar(culto);
     }
+
+    @GetMapping("/filtroTitulo")
+    public ResponseEntity<List<CultoDTO>> filtroTitulo(@RequestParam String titulo){return cultoService.filtroTitulo(titulo);}
 }

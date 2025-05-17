@@ -161,4 +161,15 @@ public class CultoService {
         Long countCultos = cultoRepository.count();
         return countCultos;
     }
+
+    public ResponseEntity<List<CultoDTO>> filtroTitulo(String titulo) {
+        List<Culto> cultosFiltrados = cultoRepository.findByTituloCultoContainingIgnoreCase(titulo);
+        List<CultoDTO> cultosDTOFiltrados = cultosFiltrados.stream()
+                                                .map(this::paraDTO)
+                                                .collect(Collectors.toList());
+
+        return cultosDTOFiltrados.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(cultosDTOFiltrados);
+    }
 }

@@ -24,4 +24,6 @@ public interface CultoRepository extends JpaRepository<Culto, Integer>{
 
     //Sistema de paginação
     Page<Culto> findAll(Pageable pageable);
+
+    List<Culto> findByTituloCultoContainingIgnoreCase(String titulo);
 }
