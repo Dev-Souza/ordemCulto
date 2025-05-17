@@ -8,6 +8,8 @@ import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.EquipeIntercessaoRepository;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -79,8 +81,9 @@ public class CultoService {
     }
 
     // Buscar todos os cultos
-    public ResponseEntity<List<CultoDTO>> getAll() {
-        List<Culto> cultos = cultoRepository.findAll();
+    public ResponseEntity<List<CultoDTO>> getAll(int pagina, int itens) {
+        //Minha paginação
+        Page<Culto> cultos = cultoRepository.findAll(PageRequest.of(pagina, itens));
         List<CultoDTO> cultoDTOs = cultos.stream()
                 .map(this::paraDTO)
                 .collect(Collectors.toList());
@@ -152,5 +155,10 @@ public class CultoService {
     public ResponseEntity<List<Culto>> getAllCultosRecentes() {
         List<Culto> cultosFiltrados = cultoRepository.findAllByOrderByDataCultoDesc();
         return ResponseEntity.ok(cultosFiltrados);
+    }
+
+    public Long getCount() {
+        Long countCultos = cultoRepository.count();
+        return countCultos;
     }
 }

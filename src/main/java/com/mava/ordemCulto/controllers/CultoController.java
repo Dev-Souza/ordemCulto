@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/culto")
@@ -28,10 +29,18 @@ public class CultoController {
         return this.cultoService.create(cultoDTO);
     }
 
-    // GET ALL
+    // GET ALL Pagination
     @GetMapping
-    public ResponseEntity<List<CultoDTO>> getAllCultos() {
-        return cultoService.getAll();
+    public ResponseEntity<List<CultoDTO>> getAllCultos(@RequestParam int pagina, @RequestParam int itens) {
+        return cultoService.getAll(pagina, itens);
+    }
+
+    // GET COUNT Cultos
+    @GetMapping("/qtd")
+    public ResponseEntity<Map<String, Long>> countCultos() {
+        long total = cultoService.getCount();
+        Map<String, Long> resposta = Map.of("quantidade", total);
+        return ResponseEntity.ok(resposta);
     }
 
     // GET BY ID
