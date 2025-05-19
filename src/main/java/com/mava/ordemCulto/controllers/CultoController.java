@@ -64,7 +64,7 @@ public class CultoController {
     }
 
     // FILTRAGEM POR DATA
-    @PostMapping("/filtro")
+    @PostMapping("/filtroData")
     public ResponseEntity<List<Culto>> filtrarCultosPorData(@Valid @RequestBody FiltrarCultoPorData filtro) {return cultoService.getCultoByData(filtro.getDataInicial(), filtro.getDataFinal());}
 
     //BUSCAR CULTOS RECENTES
