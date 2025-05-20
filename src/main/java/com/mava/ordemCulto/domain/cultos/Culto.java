@@ -35,6 +35,8 @@ public class Culto {
     private String dirigente;
     @NotNull
     private String horaProsperar;
+    @NotNull
+    private String preleitor;
     //Relacionamento com a classe Oportunidades
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference //Evita loop na serialização
