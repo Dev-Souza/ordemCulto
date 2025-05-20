@@ -35,6 +35,7 @@ public class CultoService {
         culto.setDataCulto(dto.dataCulto());
         culto.setDirigente(dto.dirigente());
         culto.setHoraProsperar(dto.horaProsperar());
+        culto.setPreleitor(dto.preleitor());
         culto.setOportunidades(dto.oportunidades());
         culto.setEquipeIntercessao(dto.equipeIntercessao());
         culto.setAvisos(dto.avisos());
@@ -50,6 +51,7 @@ public class CultoService {
                 culto.getDataCulto(),
                 culto.getDirigente(),
                 culto.getHoraProsperar(),
+                culto.getPreleitor(),
                 culto.getOportunidades(),
                 culto.getEquipeIntercessao(),
                 culto.getAvisos()

@@ -14,6 +14,7 @@ public record CultoDTO(
         LocalDate dataCulto,
         String dirigente,
         String horaProsperar,
+        String preleitor,
         List<Oportunidades> oportunidades,
         List<EquipeIntercessao> equipeIntercessao,
         List<Avisos> avisos
