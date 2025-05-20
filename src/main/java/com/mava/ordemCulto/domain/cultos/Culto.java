@@ -23,19 +23,14 @@ public class Culto {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cultos_seq")
     @SequenceGenerator(name = "cultos_seq", sequenceName = "cultos_seq", allocationSize = 1)
     private Integer id;
-    @NotNull
     @Size(min = 8, max = 100)
     private String tituloCulto;
     //ENUM
     @Enumerated(EnumType.STRING)
     private TipoCulto tipoCulto;
-    @NotNull
     private LocalDate dataCulto;
-    @NotNull
     private String dirigente;
-    @NotNull
     private String horaProsperar;
-    @NotNull
     private String preleitor;
     //Relacionamento com a classe Oportunidades
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
