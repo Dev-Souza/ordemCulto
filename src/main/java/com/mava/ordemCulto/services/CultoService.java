@@ -116,6 +116,7 @@ public class CultoService {
         cultoExistente.setDataCulto(cultoDTOAtualizado.dataCulto());
         cultoExistente.setDirigente(cultoDTOAtualizado.dirigente());
         cultoExistente.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
+        cultoExistente.setPreleitor(cultoDTOAtualizado.preleitor());
 
         //Salvando alterações nas outras tabelas de relacionamento
         cultoDTOAtualizado.oportunidades().forEach(oportunidade -> {
