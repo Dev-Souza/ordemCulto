@@ -6,7 +6,6 @@ import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
-import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadesRequestDTO;
 import com.mava.ordemCulto.infra.mapper.AvisoMapper;
 import com.mava.ordemCulto.infra.mapper.CultoMapper;
 import com.mava.ordemCulto.infra.mapper.EquipeIntercessaoMapper;
@@ -118,6 +117,10 @@ public class CultoService {
         cultoExistente.setDirigente(cultoDTOAtualizado.dirigente());
         cultoExistente.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
         cultoExistente.setPreleitor(cultoDTOAtualizado.preleitor());
+
+
+        // FAZER LÓGICA
+
 
         // Salvando o culto atualizado
         cultoRepository.save(cultoExistente);
