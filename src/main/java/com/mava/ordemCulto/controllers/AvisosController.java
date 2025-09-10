@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.controllers;
 
-import com.mava.ordemCulto.domain.avisos.dto.AvisosDTO;
+import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.services.AvisosService;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +19,15 @@ public class AvisosController {
 
     //ADD Aviso In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<Culto> addNewAviso(@PathVariable("idCulto") Long idCulto, @RequestBody AvisosDTO newAviso) {return avisosService.addAviso(idCulto, newAviso);}
+    public ResponseEntity<Culto> addNewAviso(@PathVariable("idCulto") Long idCulto, @RequestBody AvisosResponseDTO newAviso) {return avisosService.addAviso(idCulto, newAviso);}
 
     //GET ALL Avisos DE UM CULTO
     @GetMapping("/{idCulto}")
-    public ResponseEntity<List<AvisosDTO>> getAllPorUmCulto(@PathVariable("idCulto") Long idCulto) {return avisosService.getAllAvisosPorUmCulto(idCulto);}
+    public ResponseEntity<List<AvisosResponseDTO>> getAllPorUmCulto(@PathVariable("idCulto") Long idCulto) {return avisosService.getAllAvisosPorUmCulto(idCulto);}
 
     //UPDATE
     @PutMapping("/{idAviso}")
-    public ResponseEntity<AvisosDTO> updateAviso(@PathVariable("idAviso") Long idAviso, @RequestBody AvisosDTO avisoUpdated) {return avisosService.updateAviso(idAviso, avisoUpdated);}
+    public ResponseEntity<AvisosResponseDTO> updateAviso(@PathVariable("idAviso") Long idAviso, @RequestBody AvisosResponseDTO avisoUpdated) {return avisosService.updateAviso(idAviso, avisoUpdated);}
 
     //DELETE
     @DeleteMapping("/idAviso")

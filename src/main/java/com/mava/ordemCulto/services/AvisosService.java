@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.avisos.Avisos;
-import com.mava.ordemCulto.domain.avisos.dto.AvisosDTO;
+import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;
@@ -19,7 +19,7 @@ public class AvisosService {
     private final AvisosRepository avisosRepository;
     private final CultoRepository cultoRepository;
 
-    private Avisos paraEntidade(AvisosDTO avisosDTO, Long idCulto) {
+    private Avisos paraEntidade(AvisosResponseDTO avisosDTO, Long idCulto) {
         Avisos avisos = new Avisos();
         avisos.setNomeAviso(avisosDTO.nomeAviso());
         avisos.setReferente(avisosDTO.referente());
@@ -29,8 +29,8 @@ public class AvisosService {
         return avisos;
     }
 
-    private AvisosDTO paraDTO(Avisos avisos) {
-        return new AvisosDTO(
+    private AvisosResponseDTO paraDTO(Avisos avisos) {
+        return new AvisosResponseDTO(
                 avisos.getId(),
                 avisos.getNomeAviso(),
                 avisos.getReferente(),
@@ -41,7 +41,7 @@ public class AvisosService {
     }
 
     //ADD Aviso in Culto
-    public ResponseEntity<Culto> addAviso(Long idCulto, AvisosDTO newAviso) {
+    public ResponseEntity<Culto> addAviso(Long idCulto, AvisosResponseDTO newAviso) {
         //Buscando culto existente
         Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Transformando o meu newAviso em entidade
@@ -56,11 +56,11 @@ public class AvisosService {
     }
 
     //GET ALL Avisos por um culto
-    public ResponseEntity<List<AvisosDTO>> getAllAvisosPorUmCulto(Long idCulto) {
+    public ResponseEntity<List<AvisosResponseDTO>> getAllAvisosPorUmCulto(Long idCulto) {
         Culto cultoExistente = cultoRepository.getById(idCulto);
         //Setar os avisos para fazer o return
         //Converte os avisos para DTO
-        List<AvisosDTO> avisos = cultoExistente.getAvisos().stream()
+        List<AvisosResponseDTO> avisos = cultoExistente.getAvisos().stream()
                 .map(aviso -> paraDTO(aviso))
                 .collect(Collectors.toList());
 
@@ -69,7 +69,7 @@ public class AvisosService {
     }
 
     //GET BY ID AVISO
-    public ResponseEntity<AvisosDTO> getByIdAviso(Long idAviso) {
+    public ResponseEntity<AvisosResponseDTO> getByIdAviso(Long idAviso) {
         return avisosRepository.findById(idAviso)
                 .map(avisos -> ResponseEntity.ok(paraDTO(avisos)))
                 .orElseGet(() -> ResponseEntity
@@ -79,7 +79,7 @@ public class AvisosService {
     }
 
     //UPDATE AVISO
-    public ResponseEntity<AvisosDTO> updateAviso(Long idAviso, AvisosDTO avisoUpdated) {
+    public ResponseEntity<AvisosResponseDTO> updateAviso(Long idAviso, AvisosResponseDTO avisoUpdated) {
         Avisos avisoBuscado = avisosRepository.findById(idAviso).orElseThrow(() -> new RuntimeException("Aviso não encontrado"));
         avisoBuscado.setNomeAviso(avisoUpdated.nomeAviso());
         avisoBuscado.setReferente(avisoUpdated.referente());
@@ -92,7 +92,7 @@ public class AvisosService {
 
     //DELETE AVISO
     public ResponseEntity<Void> deleteAviso (Long idAviso){
-        ResponseEntity<AvisosDTO> avisoEncontrado = getByIdAviso(idAviso);
+        ResponseEntity<AvisosResponseDTO> avisoEncontrado = getByIdAviso(idAviso);
         avisosRepository.deleteById(idAviso);
         return ResponseEntity.noContent().build();
     }

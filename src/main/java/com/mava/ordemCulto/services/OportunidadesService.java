@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeDTO;
+import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
@@ -20,8 +20,8 @@ public class OportunidadesService {
     private final OportunidadesRepository oportunidadesRepository;
 
     // Converter Entity para DTO
-    private OportunidadeDTO paraDTO(Oportunidades oportunidades) {
-        return new OportunidadeDTO(
+    private OportunidadeResponseDTO paraDTO(Oportunidades oportunidades) {
+        return new OportunidadeResponseDTO(
                 oportunidades.getId(),
                 oportunidades.getNomePessoa(),
                 oportunidades.getMomento(),
@@ -29,7 +29,7 @@ public class OportunidadesService {
         );
     }
 
-    private Oportunidades paraEntidade(OportunidadeDTO oportunidadeDTO, Long idCulto) {
+    private Oportunidades paraEntidade(OportunidadeResponseDTO oportunidadeDTO, Long idCulto) {
         Oportunidades oportunidades = new Oportunidades();
         oportunidades.setNomePessoa(oportunidadeDTO.nomePessoa());
         oportunidades.setMomento(oportunidadeDTO.momentoOportunidade());
@@ -38,7 +38,7 @@ public class OportunidadesService {
     }
 
     //ADD Oportunidade In Culto
-    public ResponseEntity<Culto> addOportunidade(Long idCulto, OportunidadeDTO newOportunidade) {
+    public ResponseEntity<Culto> addOportunidade(Long idCulto, OportunidadeResponseDTO newOportunidade) {
         //Buscando culto existente
         Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Transformando a minha newOportunidade em entidade
@@ -53,12 +53,12 @@ public class OportunidadesService {
     }
 
     //GET ALL Oportunidades por um culto
-    public ResponseEntity<List<OportunidadeDTO>> getAllOportunidadesPorUmCulto(Long idCulto) {
+    public ResponseEntity<List<OportunidadeResponseDTO>> getAllOportunidadesPorUmCulto(Long idCulto) {
         Culto cultoExistente = cultoRepository.getById(idCulto);
         //Setar as oportunidades para fazer o return
         // Converte as oportunidades para DTO
-        List<OportunidadeDTO> oportunidades = cultoExistente.getOportunidades().stream()
-                .map(oportunidade -> new OportunidadeDTO(
+        List<OportunidadeResponseDTO> oportunidades = cultoExistente.getOportunidades().stream()
+                .map(oportunidade -> new OportunidadeResponseDTO(
                         oportunidade.getId(),
                         oportunidade.getNomePessoa(),
                         oportunidade.getMomento(),
@@ -71,7 +71,7 @@ public class OportunidadesService {
     }
 
     //GET BY ID OPORTUNIDADE
-    public ResponseEntity<OportunidadeDTO> getByIdOportunidade(Long idOportunidade) {
+    public ResponseEntity<OportunidadeResponseDTO> getByIdOportunidade(Long idOportunidade) {
         return oportunidadesRepository.findById(idOportunidade)
                 .map(oportunidades -> ResponseEntity.ok(paraDTO(oportunidades)))
                 .orElseGet(() -> ResponseEntity
@@ -81,7 +81,7 @@ public class OportunidadesService {
     }
 
     //UPDATE OPORTUNIDADE
-    public ResponseEntity<OportunidadeDTO> updateOportunidade(Long idOportunidade, OportunidadeDTO oportunidadeUpdated) {
+    public ResponseEntity<OportunidadeResponseDTO> updateOportunidade(Long idOportunidade, OportunidadeResponseDTO oportunidadeUpdated) {
         Oportunidades oportunidadeBuscada = oportunidadesRepository.findById(idOportunidade).orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
         oportunidadeBuscada.setNomePessoa(oportunidadeUpdated.nomePessoa());
         oportunidadeBuscada.setMomento(oportunidadeUpdated.momentoOportunidade());
@@ -92,7 +92,7 @@ public class OportunidadesService {
 
     //DELETE OPORTUNIDADE
     public ResponseEntity<Void> deleteOportunidade(Long idOportunidade) {
-        ResponseEntity<OportunidadeDTO> oportunidadeEncontrada = getByIdOportunidade(idOportunidade);
+        ResponseEntity<OportunidadeResponseDTO> oportunidadeEncontrada = getByIdOportunidade(idOportunidade);
         oportunidadesRepository.deleteById(idOportunidade);
         return ResponseEntity.noContent().build();
     }

@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.cultos.dto.CultoDTO;
+import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.cultos.dto.FiltrarCultoPorData;
 import com.mava.ordemCulto.services.CultoService;
 import com.mava.ordemCulto.services.JasperReportService;
@@ -25,13 +25,13 @@ public class CultoController {
 
     // CREATE
     @PostMapping
-    public ResponseEntity<Culto> createNewCulto(@Valid @RequestBody CultoDTO cultoDTO) {
+    public ResponseEntity<Culto> createNewCulto(@Valid @RequestBody CultoResponseDTO cultoDTO) {
         return this.cultoService.create(cultoDTO);
     }
 
     // GET ALL Pagination
     @GetMapping
-    public ResponseEntity<List<CultoDTO>> getAllCultos(@RequestParam int pagina, @RequestParam int itens) {
+    public ResponseEntity<List<CultoResponseDTO>> getAllCultos(@RequestParam int pagina, @RequestParam int itens) {
         return cultoService.getAll(pagina, itens);
     }
 
@@ -45,15 +45,15 @@ public class CultoController {
 
     // GET BY ID
     @GetMapping("/{id}") // Use a barra inicial para melhor prática de URL
-    public ResponseEntity<CultoDTO> getByIdCulto(@PathVariable("id") Long id) {
+    public ResponseEntity<CultoResponseDTO> getByIdCulto(@PathVariable("id") Long id) {
         return cultoService.getByIdCulto(id);
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<CultoDTO> updateByIdCulto(
+    public ResponseEntity<CultoResponseDTO> updateByIdCulto(
             @PathVariable("id") Long id,
-            @Valid @RequestBody CultoDTO cultoDTOAtualizado) {
+            @Valid @RequestBody CultoResponseDTO cultoDTOAtualizado) {
         return cultoService.update(id, cultoDTOAtualizado);
     }
 
@@ -77,5 +77,5 @@ public class CultoController {
     }
 
     @GetMapping("/filtroTitulo")
-    public ResponseEntity<List<CultoDTO>> filtroTitulo(@RequestParam String titulo){return cultoService.filtroTitulo(titulo);}
+    public ResponseEntity<List<CultoResponseDTO>> filtroTitulo(@RequestParam String titulo){return cultoService.filtroTitulo(titulo);}
 }

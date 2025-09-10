@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoDTO;
+import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoResponseDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.EquipeIntercessaoRepository;
@@ -19,7 +19,7 @@ public class EquipeIntercessaoService {
     private final EquipeIntercessaoRepository equipeIntercessaoRepository;
     private final CultoRepository cultoRepository;
 
-    private EquipeIntercessao paraEntidade(EquipeIntercessaoDTO equipeIntercessaoDTO, Integer idCulto) {
+    private EquipeIntercessao paraEntidade(EquipeIntercessaoResponseDTO equipeIntercessaoDTO, Integer idCulto) {
         EquipeIntercessao equipeIntercessao = new EquipeIntercessao();
         equipeIntercessao.setNomeObreiro(equipeIntercessaoDTO.nomeObreiro());
         equipeIntercessao.setCargo(equipeIntercessaoDTO.cargoEquipeIntercessao());
@@ -27,17 +27,17 @@ public class EquipeIntercessaoService {
         return equipeIntercessao;
     }
 
-    private EquipeIntercessaoDTO paraDTO(EquipeIntercessao equipeIntercessao) {
-        return new EquipeIntercessaoDTO(
+    private EquipeIntercessaoResponseDTO paraDTO(EquipeIntercessao equipeIntercessao) {
+        return new EquipeIntercessaoResponseDTO(
                 equipeIntercessao.getId(),
                 equipeIntercessao.getNomeObreiro(),
                 equipeIntercessao.getCargo(),
-                equipeIntercessao.getCultoId()
+                equipeIntercessao.getCulto().getId()
         );
     }
 
     //ADD Intercessor In Culto
-    public ResponseEntity<Culto> addIntercesor(Long idCulto, EquipeIntercessaoDTO newIntercessor) {
+    public ResponseEntity<Culto> addIntercesor(Long idCulto, EquipeIntercessaoResponseDTO newIntercessor) {
         //Buscando culto existente
         Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Tranformando o meu newIntercessor em entidade
@@ -52,11 +52,11 @@ public class EquipeIntercessaoService {
     }
 
     //GET ALL EquipeIntercessão por um culto
-    public ResponseEntity<List<EquipeIntercessaoDTO>> getAllIntercessorPorUmCulto(Integer idCulto) {
+    public ResponseEntity<List<EquipeIntercessaoResponseDTO>> getAllIntercessorPorUmCulto(Integer idCulto) {
         Culto cultoExistente = cultoRepository.getById(idCulto);
         //Setar os intercessores para fazer o return
         //Converte os avisos ára DTO
-        List<EquipeIntercessaoDTO> intercessores = cultoExistente.getEquipeIntercessao().stream()
+        List<EquipeIntercessaoResponseDTO> intercessores = cultoExistente.getEquipeIntercessao().stream()
                 .map(intercessor -> paraDTO(intercessor))
                 .collect(Collectors.toList());
 
@@ -65,7 +65,7 @@ public class EquipeIntercessaoService {
     }
 
     //GET BY ID INTERCESSOR
-    public ResponseEntity<EquipeIntercessaoDTO> getByIdIntercessor(Integer idIntercessor) {
+    public ResponseEntity<EquipeIntercessaoResponseDTO> getByIdIntercessor(Integer idIntercessor) {
         return equipeIntercessaoRepository.findById(idIntercessor)
                 .map(intercessores -> ResponseEntity.ok(paraDTO(intercessores)))
                 .orElseGet(() -> ResponseEntity
@@ -75,7 +75,7 @@ public class EquipeIntercessaoService {
     }
 
     //UPDATE INTERCESSOR
-    public ResponseEntity<EquipeIntercessaoDTO> updateIntercessor(Integer idIntercessor, EquipeIntercessaoDTO intercessorUpdated) {
+    public ResponseEntity<EquipeIntercessaoResponseDTO> updateIntercessor(Integer idIntercessor, EquipeIntercessaoResponseDTO intercessorUpdated) {
         EquipeIntercessao equipeIntercessao = equipeIntercessaoRepository.findById(idIntercessor).orElseThrow(() -> new RuntimeException("Aviso não encontrado"));
         equipeIntercessao.setNomeObreiro(intercessorUpdated.nomeObreiro());
         equipeIntercessao.setCargo(intercessorUpdated.cargoEquipeIntercessao());
@@ -86,7 +86,7 @@ public class EquipeIntercessaoService {
 
     //DELETE INTERCESSOR
     public ResponseEntity<Void> deleteIntercessor(Integer idIntercessor) {
-        ResponseEntity<EquipeIntercessaoDTO> equipeIntercessaoEncontrado = getByIdIntercessor(idIntercessor);
+        ResponseEntity<EquipeIntercessaoResponseDTO> equipeIntercessaoEncontrado = getByIdIntercessor(idIntercessor);
         equipeIntercessaoRepository.deleteById(idIntercessor);
         return ResponseEntity.noContent().build();
     }
