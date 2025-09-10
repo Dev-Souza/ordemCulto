@@ -1,9 +1,16 @@
 package com.mava.ordemCulto.services;
 
+import com.mava.ordemCulto.domain.avisos.Avisos;
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
+import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
+import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
+import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadesRequestDTO;
+import com.mava.ordemCulto.infra.mapper.AvisoMapper;
 import com.mava.ordemCulto.infra.mapper.CultoMapper;
+import com.mava.ordemCulto.infra.mapper.EquipeIntercessaoMapper;
+import com.mava.ordemCulto.infra.mapper.OportunidadeMapper;
 import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.EquipeIntercessaoRepository;
@@ -27,13 +34,49 @@ public class CultoService {
     private final OportunidadesRepository oportunidadesRepository;
     private final EquipeIntercessaoRepository equipeIntercessaoRepository;
     private final CultoMapper cultoMapper;
-
+    private final OportunidadeMapper oportunidadeMapper;
+    private final EquipeIntercessaoMapper equipeIntercessaoMapper;
+    private final AvisoMapper avisoMapper;
 
     // Criar um culto
     public ResponseEntity<CultoEntity> create(CultoRequestDTO cultoDTO) {
         //Salvar culto
         CultoEntity newCulto = cultoRepository.save(cultoMapper.toEntity(cultoDTO));
 
+        // VARREDURA DE OPORTUNIDADES
+        List<OportunidadeEntity> oportunidades = cultoDTO.oportunidades()
+                .stream()
+                .map(oportunidadeMapper::toEntity)
+                .toList();
+        // O FOR E PERSISTINDO
+        for (OportunidadeEntity oportunidade : oportunidades) {
+            oportunidade.setCulto(newCulto);
+            oportunidadesRepository.save(oportunidade);
+        }
+
+        // VARREDURA DE INTERCESSORES
+        List<EquipeIntercessaoEntity> intercessores = cultoDTO.equipeIntercessao()
+                .stream()
+                .map(equipeIntercessaoMapper::toEntity)
+                .toList();
+        // O FOR E PERSISTINDO
+        for (EquipeIntercessaoEntity equipeIntercessao : intercessores) {
+            equipeIntercessao.setCulto(newCulto);
+            equipeIntercessaoRepository.save(equipeIntercessao);
+        }
+
+        // VARREDURA DE AVISOS
+        List<Avisos> avisos = cultoDTO.avisos()
+                .stream()
+                .map(avisoMapper::toEntity)
+                .toList();
+        // O FOR E PRESISTINDO
+        for (Avisos aviso : avisos) {
+            aviso.setCulto(newCulto);
+            avisosRepository.save(aviso);
+        }
+
+        // RESPONSE
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("created", "Culto criado com sucesso!")

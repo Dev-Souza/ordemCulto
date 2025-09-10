@@ -67,7 +67,7 @@ public class EquipeIntercessaoService {
     public ResponseEntity<EquipeIntercessaoResponseDTO> updateIntercessor(Long idIntercessor, EquipeIntercessaoResponseDTO intercessorUpdated) {
         EquipeIntercessaoEntity equipeIntercessao = equipeIntercessaoRepository.findById(idIntercessor).orElseThrow(() -> new RuntimeException("Aviso não encontrado"));
         equipeIntercessao.setNomeObreiro(intercessorUpdated.nomeObreiro());
-        equipeIntercessao.setCargo(intercessorUpdated.cargoEquipeIntercessao());
+        equipeIntercessao.setCargoEquipeIntercessao(intercessorUpdated.cargoEquipeIntercessao());
         //Salvando este Intercessor alterado
         equipeIntercessaoRepository.save(equipeIntercessao);
         return ResponseEntity.ok(equipeIntercessaoMapper.toDTO(equipeIntercessao));

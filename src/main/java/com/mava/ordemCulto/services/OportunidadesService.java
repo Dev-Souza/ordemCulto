@@ -49,7 +49,7 @@ public class OportunidadesService {
                 .map(oportunidade -> new OportunidadeResponseDTO(
                         oportunidade.getId(),
                         oportunidade.getNomePessoa(),
-                        oportunidade.getMomento(),
+                        oportunidade.getMomentoOportunidade(),
                         idCulto
                 ))
                 .collect(Collectors.toList());
@@ -72,7 +72,7 @@ public class OportunidadesService {
     public ResponseEntity<OportunidadeResponseDTO> updateOportunidade(Long idOportunidade, OportunidadeResponseDTO oportunidadeUpdated) {
         OportunidadeEntity oportunidadeBuscada = oportunidadesRepository.findById(idOportunidade).orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
         oportunidadeBuscada.setNomePessoa(oportunidadeUpdated.nomePessoa());
-        oportunidadeBuscada.setMomento(oportunidadeUpdated.momentoOportunidade());
+        oportunidadeBuscada.setMomentoOportunidade(oportunidadeUpdated.momentoOportunidade());
         oportunidadesRepository.save(oportunidadeBuscada);
         return ResponseEntity.ok(oportunidadeMapper.toDTO(oportunidadeBuscada));
     }
