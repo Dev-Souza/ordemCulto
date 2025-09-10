@@ -1,10 +1,10 @@
 package com.mava.ordemCulto.repositories;
 
-import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
+import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface OportunidadesRepository extends JpaRepository<Oportunidades, Long> {
+public interface OportunidadesRepository extends JpaRepository<OportunidadeEntity, Long> {
     @Query(value = "SELECT COUNT(*) > 0 FROM avisos WHERE culto_id = :cultoId", nativeQuery = true)
     public boolean buscarRegistroExistente(Long cultoId);
 

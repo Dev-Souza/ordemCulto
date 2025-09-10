@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.domain.oportunidades;
 
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "oportunidades")
-public class Oportunidades {
+public class OportunidadeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,5 +19,5 @@ public class Oportunidades {
     private MomentoOportunidade momento;
     @ManyToOne
     @JoinColumn(name = "culto_id")
-    private Culto culto;
+    private CultoEntity culto;
 }

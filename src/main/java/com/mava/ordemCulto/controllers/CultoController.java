@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.controllers;
 
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.cultos.dto.FiltrarCultoPorData;
 import com.mava.ordemCulto.services.CultoService;
@@ -25,7 +25,7 @@ public class CultoController {
 
     // CREATE
     @PostMapping
-    public ResponseEntity<Culto> createNewCulto(@Valid @RequestBody CultoResponseDTO cultoDTO) {
+    public ResponseEntity<CultoEntity> createNewCulto(@Valid @RequestBody CultoResponseDTO cultoDTO) {
         return this.cultoService.create(cultoDTO);
     }
 
@@ -65,14 +65,14 @@ public class CultoController {
 
     // FILTRAGEM POR DATA
     @PostMapping("/filtroData")
-    public ResponseEntity<List<Culto>> filtrarCultosPorData(@Valid @RequestBody FiltrarCultoPorData filtro) {return cultoService.getCultoByData(filtro.getDataInicial(), filtro.getDataFinal());}
+    public ResponseEntity<List<CultoEntity>> filtrarCultosPorData(@Valid @RequestBody FiltrarCultoPorData filtro) {return cultoService.getCultoByData(filtro.getDataInicial(), filtro.getDataFinal());}
 
     //BUSCAR CULTOS RECENTES
     @GetMapping("/cultosRecentes")
-    public ResponseEntity<List<Culto>> getCultosRecentes() {return cultoService.getAllCultosRecentes();}
+    public ResponseEntity<List<CultoEntity>> getCultosRecentes() {return cultoService.getAllCultosRecentes();}
 
     @PostMapping("/gerarPDF")
-    public void gerarPDF(@RequestBody Culto culto){
+    public void gerarPDF(@RequestBody CultoEntity culto){
         this.jasperReportService.gerar(culto);
     }
 

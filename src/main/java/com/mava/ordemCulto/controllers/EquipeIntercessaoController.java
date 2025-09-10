@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.controllers;
 
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoResponseDTO;
 import com.mava.ordemCulto.services.EquipeIntercessaoService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class EquipeIntercessaoController {
 
     //ADD Intercessao In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<Culto> addNewIntercessor(@PathVariable("idCulto") Integer idCulto, @RequestBody EquipeIntercessaoResponseDTO newIntercessor) {return equipeIntercessaoService.addIntercesor(idCulto, newIntercessor);}
+    public ResponseEntity<CultoEntity> addNewIntercessor(@PathVariable("idCulto") Integer idCulto, @RequestBody EquipeIntercessaoResponseDTO newIntercessor) {return equipeIntercessaoService.addIntercesor(idCulto, newIntercessor);}
 
     //GET ALL Intercessores DE UM CULTO
     @GetMapping("/{idCulto}")

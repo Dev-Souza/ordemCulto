@@ -1,8 +1,8 @@
 package com.mava.ordemCulto.domain.cultos;
 
 import com.mava.ordemCulto.domain.avisos.Avisos;
-import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
-import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
+import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
+import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "cultos")
-public class Culto {
+public class CultoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,10 +31,10 @@ public class Culto {
     private String preleitor;
     //Relacionamento com a classe Oportunidades
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Oportunidades> oportunidades = new ArrayList<>();
+    private List<OportunidadeEntity> oportunidades = new ArrayList<>();
     //Relacionamento com a classe EquipeIntercessao
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EquipeIntercessao> equipeIntercessao = new ArrayList<>();
+    private List<EquipeIntercessaoEntity> equipeIntercessao = new ArrayList<>();
     //Relacionamento com a classe Avisos
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Avisos> avisos = new ArrayList<>();

@@ -2,7 +2,7 @@ package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.avisos.Avisos;
 import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import lombok.AllArgsConstructor;
@@ -41,9 +41,9 @@ public class AvisosService {
     }
 
     //ADD Aviso in Culto
-    public ResponseEntity<Culto> addAviso(Long idCulto, AvisosResponseDTO newAviso) {
+    public ResponseEntity<CultoEntity> addAviso(Long idCulto, AvisosResponseDTO newAviso) {
         //Buscando culto existente
-        Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
+        CultoEntity cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Transformando o meu newAviso em entidade
         Avisos novoAviso = paraEntidade(newAviso, idCulto);
 
@@ -57,7 +57,7 @@ public class AvisosService {
 
     //GET ALL Avisos por um culto
     public ResponseEntity<List<AvisosResponseDTO>> getAllAvisosPorUmCulto(Long idCulto) {
-        Culto cultoExistente = cultoRepository.getById(idCulto);
+        CultoEntity cultoExistente = cultoRepository.getById(idCulto);
         //Setar os avisos para fazer o return
         //Converte os avisos para DTO
         List<AvisosResponseDTO> avisos = cultoExistente.getAvisos().stream()

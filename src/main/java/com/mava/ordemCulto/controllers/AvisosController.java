@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.services.AvisosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class AvisosController {
 
     //ADD Aviso In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<Culto> addNewAviso(@PathVariable("idCulto") Long idCulto, @RequestBody AvisosResponseDTO newAviso) {return avisosService.addAviso(idCulto, newAviso);}
+    public ResponseEntity<CultoEntity> addNewAviso(@PathVariable("idCulto") Long idCulto, @RequestBody AvisosResponseDTO newAviso) {return avisosService.addAviso(idCulto, newAviso);}
 
     //GET ALL Avisos DE UM CULTO
     @GetMapping("/{idCulto}")

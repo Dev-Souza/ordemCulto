@@ -3,7 +3,7 @@ package com.mava.ordemCulto.controllers;
 import com.mava.ordemCulto.domain.users.dto.AuthenticationDTO;
 import com.mava.ordemCulto.domain.users.dto.LoginResponseDTO;
 import com.mava.ordemCulto.domain.users.dto.RegisterDTO;
-import com.mava.ordemCulto.domain.users.User;
+import com.mava.ordemCulto.domain.users.UserEntity;
 import com.mava.ordemCulto.repositories.UserRepository;
 import com.mava.ordemCulto.services.TokenService;
 import jakarta.validation.Valid;
@@ -29,7 +29,7 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        var token = tokenService.generateToken((User) auth.getPrincipal());
+        var token = tokenService.generateToken((UserEntity) auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
@@ -39,7 +39,7 @@ public class AuthenticationController {
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, data.role());
+        UserEntity newUser = new UserEntity(data.login(), encryptedPassword, data.role());
 
         this.repository.save(newUser);
 

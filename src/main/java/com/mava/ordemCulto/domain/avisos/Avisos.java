@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.domain.avisos;
 
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,5 +28,5 @@ public class Avisos {
 
     @ManyToOne
     @JoinColumn(name = "culto_id")
-    private Culto culto;
+    private CultoEntity culto;
 }

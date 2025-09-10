@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.services;
 
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;
@@ -26,8 +26,8 @@ public class CultoService {
     private final EquipeIntercessaoRepository equipeIntercessaoRepository;
 
     // Converter DTO para Entity
-    private Culto paraEntidade(CultoResponseDTO dto) {
-        Culto culto = new Culto();
+    private CultoEntity paraEntidade(CultoResponseDTO dto) {
+        CultoEntity culto = new CultoEntity();
         culto.setId(dto.id());
         culto.setTituloCulto(dto.tituloCulto());
         culto.setTipoCulto(dto.tipoCulto());
@@ -42,7 +42,7 @@ public class CultoService {
     }
 
     // Converter Entity para DTO
-    private CultoResponseDTO paraDTO(Culto culto) {
+    private CultoResponseDTO paraDTO(CultoEntity culto) {
         return new CultoResponseDTO(
                 culto.getId(),
                 culto.getTituloCulto(),
@@ -58,9 +58,9 @@ public class CultoService {
     }
 
     // Criar um culto
-    public ResponseEntity<Culto> create(CultoResponseDTO cultoDTO) {
+    public ResponseEntity<CultoEntity> create(CultoResponseDTO cultoDTO) {
         //Salvar culto
-        Culto newCulto = cultoRepository.save(paraEntidade(cultoDTO));
+        CultoEntity newCulto = cultoRepository.save(paraEntidade(cultoDTO));
 
         //Atualização das classes relacionadas
         cultoDTO.oportunidades().forEach(oportunidade -> {
@@ -84,7 +84,7 @@ public class CultoService {
     // Buscar todos os cultos
     public ResponseEntity<List<CultoResponseDTO>> getAll(int pagina, int itens) {
         //Minha paginação
-        Page<Culto> cultos = cultoRepository.findAll(PageRequest.of(pagina, itens));
+        Page<CultoEntity> cultos = cultoRepository.findAll(PageRequest.of(pagina, itens));
         List<CultoResponseDTO> cultoDTOs = cultos.stream()
                 .map(this::paraDTO)
                 .collect(Collectors.toList());
@@ -107,7 +107,7 @@ public class CultoService {
     // Alterar o culto encontrado por ID
     public ResponseEntity<CultoResponseDTO> update(Long id, CultoResponseDTO cultoDTOAtualizado) {
         // Buscando o culto pelo ID
-        Culto cultoExistente = cultoRepository.findById(id).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
+        CultoEntity cultoExistente = cultoRepository.findById(id).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
 
         // Atualizando os dados do culto
         cultoExistente.setTituloCulto(cultoDTOAtualizado.tituloCulto());
@@ -145,17 +145,17 @@ public class CultoService {
     }
 
     // Filtragem de data de culto
-    public ResponseEntity<List<Culto>> getCultoByData(LocalDate dataInicial, LocalDate dataFinal) {
+    public ResponseEntity<List<CultoEntity>> getCultoByData(LocalDate dataInicial, LocalDate dataFinal) {
         if (dataInicial.isAfter(dataFinal)) {
             throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
         }
-        List<Culto> listaCultos = cultoRepository.findByDataCultoBetween(dataInicial, dataFinal);
+        List<CultoEntity> listaCultos = cultoRepository.findByDataCultoBetween(dataInicial, dataFinal);
         return ResponseEntity.ok(listaCultos);
     }
 
     //Buscar datas mais recentes
-    public ResponseEntity<List<Culto>> getAllCultosRecentes() {
-        List<Culto> cultosFiltrados = cultoRepository.findAllByOrderByDataCultoDesc();
+    public ResponseEntity<List<CultoEntity>> getAllCultosRecentes() {
+        List<CultoEntity> cultosFiltrados = cultoRepository.findAllByOrderByDataCultoDesc();
         return ResponseEntity.ok(cultosFiltrados);
     }
 
@@ -165,7 +165,7 @@ public class CultoService {
     }
 
     public ResponseEntity<List<CultoResponseDTO>> filtroTitulo(String titulo) {
-        List<Culto> cultosFiltrados = cultoRepository.findByTituloCultoContainingIgnoreCase(titulo);
+        List<CultoEntity> cultosFiltrados = cultoRepository.findByTituloCultoContainingIgnoreCase(titulo);
         List<CultoResponseDTO> cultosDTOFiltrados = cultosFiltrados.stream()
                                                 .map(this::paraDTO)
                                                 .collect(Collectors.toList());

@@ -1,11 +1,8 @@
 package com.mava.ordemCulto.domain.cultos.dto;
 
-import com.mava.ordemCulto.domain.avisos.Avisos;
 import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
 import com.mava.ordemCulto.domain.cultos.TipoCulto;
-import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
 import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoResponseDTO;
-import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
 
 import java.time.LocalDate;

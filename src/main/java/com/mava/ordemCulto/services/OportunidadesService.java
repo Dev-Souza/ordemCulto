@@ -1,8 +1,8 @@
 package com.mava.ordemCulto.services;
 
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
-import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
+import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class OportunidadesService {
     private final OportunidadesRepository oportunidadesRepository;
 
     // Converter Entity para DTO
-    private OportunidadeResponseDTO paraDTO(Oportunidades oportunidades) {
+    private OportunidadeResponseDTO paraDTO(OportunidadeEntity oportunidades) {
         return new OportunidadeResponseDTO(
                 oportunidades.getId(),
                 oportunidades.getNomePessoa(),
@@ -29,8 +29,8 @@ public class OportunidadesService {
         );
     }
 
-    private Oportunidades paraEntidade(OportunidadeResponseDTO oportunidadeDTO, Long idCulto) {
-        Oportunidades oportunidades = new Oportunidades();
+    private OportunidadeEntity paraEntidade(OportunidadeResponseDTO oportunidadeDTO, Long idCulto) {
+        OportunidadeEntity oportunidades = new OportunidadeEntity();
         oportunidades.setNomePessoa(oportunidadeDTO.nomePessoa());
         oportunidades.setMomento(oportunidadeDTO.momentoOportunidade());
         oportunidades.setCultoId(idCulto);
@@ -38,11 +38,11 @@ public class OportunidadesService {
     }
 
     //ADD Oportunidade In Culto
-    public ResponseEntity<Culto> addOportunidade(Long idCulto, OportunidadeResponseDTO newOportunidade) {
+    public ResponseEntity<CultoEntity> addOportunidade(Long idCulto, OportunidadeResponseDTO newOportunidade) {
         //Buscando culto existente
-        Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
+        CultoEntity cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Transformando a minha newOportunidade em entidade
-        Oportunidades novaOportunidade = paraEntidade(newOportunidade, idCulto);
+        OportunidadeEntity novaOportunidade = paraEntidade(newOportunidade, idCulto);
 
         //Adicionando essa oportunidade com as demais
         cultoBuscado.getOportunidades().add(novaOportunidade);
@@ -54,7 +54,7 @@ public class OportunidadesService {
 
     //GET ALL Oportunidades por um culto
     public ResponseEntity<List<OportunidadeResponseDTO>> getAllOportunidadesPorUmCulto(Long idCulto) {
-        Culto cultoExistente = cultoRepository.getById(idCulto);
+        CultoEntity cultoExistente = cultoRepository.getById(idCulto);
         //Setar as oportunidades para fazer o return
         // Converte as oportunidades para DTO
         List<OportunidadeResponseDTO> oportunidades = cultoExistente.getOportunidades().stream()
@@ -82,7 +82,7 @@ public class OportunidadesService {
 
     //UPDATE OPORTUNIDADE
     public ResponseEntity<OportunidadeResponseDTO> updateOportunidade(Long idOportunidade, OportunidadeResponseDTO oportunidadeUpdated) {
-        Oportunidades oportunidadeBuscada = oportunidadesRepository.findById(idOportunidade).orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+        OportunidadeEntity oportunidadeBuscada = oportunidadesRepository.findById(idOportunidade).orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
         oportunidadeBuscada.setNomePessoa(oportunidadeUpdated.nomePessoa());
         oportunidadeBuscada.setMomento(oportunidadeUpdated.momentoOportunidade());
         oportunidadeBuscada.setCultoId(oportunidadeUpdated.cultoId());

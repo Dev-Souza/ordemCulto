@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.domain.equipe_intercessao;
 
-import com.mava.ordemCulto.domain.cultos.Culto;
+import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "equipeIntercessao")
-public class EquipeIntercessao {
+public class EquipeIntercessaoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,5 +19,5 @@ public class EquipeIntercessao {
     private CargoEquipeIntercessao cargo;
     @ManyToOne
     @JoinColumn(name = "culto_id")
-    private Culto culto;
+    private CultoEntity culto;
 }
