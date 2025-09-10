@@ -16,7 +16,7 @@ public class EquipeIntercessaoEntity {
     private String nomeObreiro;
     //ENUM
     @Enumerated(EnumType.STRING)
-    private CargoEquipeIntercessao cargo;
+    private CargoEquipeIntercessao cargoEquipeIntercessao;
     @ManyToOne
     @JoinColumn(name = "culto_id")
     private CultoEntity culto;
