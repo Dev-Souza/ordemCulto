@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.avisos.Avisos;
-import com.mava.ordemCulto.domain.avisos.AvisosDTO;
+import com.mava.ordemCulto.domain.avisos.dto.AvisosDTO;
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;

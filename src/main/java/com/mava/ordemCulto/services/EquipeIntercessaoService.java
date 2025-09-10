@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoDTO;
+import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.EquipeIntercessaoRepository;

@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.oportunidades.OportunidadeDTO;
+import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeDTO;
 import com.mava.ordemCulto.services.OportunidadesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

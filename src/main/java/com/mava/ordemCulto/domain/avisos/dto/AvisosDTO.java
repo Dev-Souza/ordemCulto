@@ -1,4 +1,4 @@
-package com.mava.ordemCulto.domain.avisos;
+package com.mava.ordemCulto.domain.avisos.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

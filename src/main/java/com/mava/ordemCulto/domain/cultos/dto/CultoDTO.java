@@ -1,6 +1,7 @@
-package com.mava.ordemCulto.domain.cultos;
+package com.mava.ordemCulto.domain.cultos.dto;
 
 import com.mava.ordemCulto.domain.avisos.Avisos;
+import com.mava.ordemCulto.domain.cultos.TipoCulto;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessao;
 import com.mava.ordemCulto.domain.oportunidades.Oportunidades;
 

@@ -1,8 +1,8 @@
 package com.mava.ordemCulto.controllers;
 
-import com.mava.ordemCulto.domain.users.AuthenticationDTO;
-import com.mava.ordemCulto.domain.users.LoginResponseDTO;
-import com.mava.ordemCulto.domain.users.RegisterDTO;
+import com.mava.ordemCulto.domain.users.dto.AuthenticationDTO;
+import com.mava.ordemCulto.domain.users.dto.LoginResponseDTO;
+import com.mava.ordemCulto.domain.users.dto.RegisterDTO;
 import com.mava.ordemCulto.domain.users.User;
 import com.mava.ordemCulto.repositories.UserRepository;
 import com.mava.ordemCulto.services.TokenService;

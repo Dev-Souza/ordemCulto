@@ -1,8 +1,8 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.cultos.CultoDTO;
-import com.mava.ordemCulto.domain.cultos.FiltrarCultoPorData;
+import com.mava.ordemCulto.domain.cultos.dto.CultoDTO;
+import com.mava.ordemCulto.domain.cultos.dto.FiltrarCultoPorData;
 import com.mava.ordemCulto.services.CultoService;
 import com.mava.ordemCulto.services.JasperReportService;
 import jakarta.validation.Valid;

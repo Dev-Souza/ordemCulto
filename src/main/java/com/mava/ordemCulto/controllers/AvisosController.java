@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.controllers;
 
-import com.mava.ordemCulto.domain.avisos.AvisosDTO;
+import com.mava.ordemCulto.domain.avisos.dto.AvisosDTO;
 import com.mava.ordemCulto.domain.cultos.Culto;
 import com.mava.ordemCulto.services.AvisosService;
 import lombok.RequiredArgsConstructor;

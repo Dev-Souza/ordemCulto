@@ -1,4 +1,4 @@
-package com.mava.ordemCulto.domain.cultos;
+package com.mava.ordemCulto.domain.cultos.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.Culto;
-import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoDTO;
+import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoDTO;
 import com.mava.ordemCulto.services.EquipeIntercessaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
