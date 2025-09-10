@@ -1,11 +1,15 @@
 package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
-import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
+import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
+import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
+import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadesRequestDTO;
+import com.mava.ordemCulto.infra.mapper.CultoMapper;
+import com.mava.ordemCulto.infra.mapper.OportunidadeMapper;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,42 +18,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OportunidadesService {
     private final CultoRepository cultoRepository;
     private final OportunidadesRepository oportunidadesRepository;
-
-    // Converter Entity para DTO
-    private OportunidadeResponseDTO paraDTO(OportunidadeEntity oportunidades) {
-        return new OportunidadeResponseDTO(
-                oportunidades.getId(),
-                oportunidades.getNomePessoa(),
-                oportunidades.getMomento(),
-                oportunidades.getCultoId()
-        );
-    }
-
-    private OportunidadeEntity paraEntidade(OportunidadeResponseDTO oportunidadeDTO, Long idCulto) {
-        OportunidadeEntity oportunidades = new OportunidadeEntity();
-        oportunidades.setNomePessoa(oportunidadeDTO.nomePessoa());
-        oportunidades.setMomento(oportunidadeDTO.momentoOportunidade());
-        oportunidades.setCultoId(idCulto);
-        return oportunidades;
-    }
+    private final OportunidadeMapper oportunidadeMapper;
+    private final CultoMapper cultoMapper;
 
     //ADD Oportunidade In Culto
-    public ResponseEntity<CultoEntity> addOportunidade(Long idCulto, OportunidadeResponseDTO newOportunidade) {
+    public ResponseEntity<CultoResponseDTO> addOportunidade(Long idCulto, OportunidadesRequestDTO newOportunidade) {
         //Buscando culto existente
         CultoEntity cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Transformando a minha newOportunidade em entidade
-        OportunidadeEntity novaOportunidade = paraEntidade(newOportunidade, idCulto);
+        OportunidadeEntity novaOportunidade = oportunidadeMapper.toEntity(newOportunidade);
 
         //Adicionando essa oportunidade com as demais
         cultoBuscado.getOportunidades().add(novaOportunidade);
         //Salvando este culto com a nova oportunidade
-        cultoRepository.save(cultoBuscado);
+        CultoEntity cultoSaved = cultoRepository.save(cultoBuscado);
 
-        return ResponseEntity.ok(cultoBuscado);
+        return ResponseEntity.ok(cultoMapper.toDTO(cultoSaved));
     }
 
     //GET ALL Oportunidades por um culto
@@ -73,7 +61,7 @@ public class OportunidadesService {
     //GET BY ID OPORTUNIDADE
     public ResponseEntity<OportunidadeResponseDTO> getByIdOportunidade(Long idOportunidade) {
         return oportunidadesRepository.findById(idOportunidade)
-                .map(oportunidades -> ResponseEntity.ok(paraDTO(oportunidades)))
+                .map(oportunidades -> ResponseEntity.ok(oportunidadeMapper.toDTO(oportunidades)))
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .header("error", "Nenhuma oportunidade encontrada!")
@@ -85,9 +73,8 @@ public class OportunidadesService {
         OportunidadeEntity oportunidadeBuscada = oportunidadesRepository.findById(idOportunidade).orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
         oportunidadeBuscada.setNomePessoa(oportunidadeUpdated.nomePessoa());
         oportunidadeBuscada.setMomento(oportunidadeUpdated.momentoOportunidade());
-        oportunidadeBuscada.setCultoId(oportunidadeUpdated.cultoId());
         oportunidadesRepository.save(oportunidadeBuscada);
-        return ResponseEntity.ok(paraDTO(oportunidadeBuscada));
+        return ResponseEntity.ok(oportunidadeMapper.toDTO(oportunidadeBuscada));
     }
 
     //DELETE OPORTUNIDADE

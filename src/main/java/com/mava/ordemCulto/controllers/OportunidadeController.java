@@ -1,7 +1,9 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
+import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
+import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadesRequestDTO;
 import com.mava.ordemCulto.services.OportunidadesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ public class OportunidadeController {
 
     //ADD Oportunidade In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<CultoEntity> addNewOportunidade(@PathVariable("idCulto") Long idCulto, @RequestBody OportunidadeResponseDTO newOportunidade) {return oportunidadeService.addOportunidade(idCulto, newOportunidade);}
+    public ResponseEntity<CultoResponseDTO> addNewOportunidade(@PathVariable("idCulto") Long idCulto, @RequestBody OportunidadesRequestDTO newOportunidade) {return oportunidadeService.addOportunidade(idCulto, newOportunidade);}
 
     //GET ALL Oportunidades DE UM CULTO
     @GetMapping("/{idCulto}")
