@@ -19,17 +19,17 @@ public class OportunidadeController {
 
     //ADD Oportunidade In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<CultoEntity> addNewOportunidade(@PathVariable("idCulto") Integer idCulto, @RequestBody OportunidadeResponseDTO newOportunidade) {return oportunidadeService.addOportunidade(idCulto, newOportunidade);}
+    public ResponseEntity<CultoEntity> addNewOportunidade(@PathVariable("idCulto") Long idCulto, @RequestBody OportunidadeResponseDTO newOportunidade) {return oportunidadeService.addOportunidade(idCulto, newOportunidade);}
 
     //GET ALL Oportunidades DE UM CULTO
     @GetMapping("/{idCulto}")
-    public ResponseEntity<List<OportunidadeResponseDTO>> getAllPorUmCulto(@PathVariable("idCulto") Integer idCulto) { return oportunidadeService.getAllOportunidadesPorUmCulto(idCulto);}
+    public ResponseEntity<List<OportunidadeResponseDTO>> getAllPorUmCulto(@PathVariable("idCulto") Long idCulto) { return oportunidadeService.getAllOportunidadesPorUmCulto(idCulto);}
 
     //UPDATE
     @PutMapping("/{idOportunidade}")
-    public ResponseEntity<OportunidadeResponseDTO> updateOportunidade(@PathVariable("idOportunidade") Integer idOportunidade, @RequestBody OportunidadeResponseDTO oportunidadeUpdated) {return oportunidadeService.updateOportunidade(idOportunidade, oportunidadeUpdated);}
+    public ResponseEntity<OportunidadeResponseDTO> updateOportunidade(@PathVariable("idOportunidade") Long idOportunidade, @RequestBody OportunidadeResponseDTO oportunidadeUpdated) {return oportunidadeService.updateOportunidade(idOportunidade, oportunidadeUpdated);}
 
     //DELETE
     @DeleteMapping("/{idOportunidade}")
-    public ResponseEntity<Void> deleteOportunidade(@PathVariable("idOportunidade") Integer idOportunidade) {return oportunidadeService.deleteOportunidade(idOportunidade);}
+    public ResponseEntity<Void> deleteOportunidade(@PathVariable("idOportunidade") Long idOportunidade) {return oportunidadeService.deleteOportunidade(idOportunidade);}
 }

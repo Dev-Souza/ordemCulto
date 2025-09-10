@@ -19,7 +19,7 @@ public class EquipeIntercessaoController {
 
     //ADD Intercessao In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<CultoEntity> addNewIntercessor(@PathVariable("idCulto") Integer idCulto, @RequestBody EquipeIntercessaoResponseDTO newIntercessor) {return equipeIntercessaoService.addIntercesor(idCulto, newIntercessor);}
+    public ResponseEntity<CultoEntity> addNewIntercessor(@PathVariable("idCulto") Long idCulto, @RequestBody EquipeIntercessaoResponseDTO newIntercessor) {return equipeIntercessaoService.addIntercesor(idCulto, newIntercessor);}
 
     //GET ALL Intercessores DE UM CULTO
     @GetMapping("/{idCulto}")
