@@ -1,6 +1,7 @@
 package com.mava.ordemCulto.controllers;
 
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
+import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.cultos.dto.FiltrarCultoPorData;
 import com.mava.ordemCulto.services.CultoService;
@@ -25,7 +26,7 @@ public class CultoController {
 
     // CREATE
     @PostMapping
-    public ResponseEntity<CultoEntity> createNewCulto(@Valid @RequestBody CultoResponseDTO cultoDTO) {
+    public ResponseEntity<CultoEntity> createNewCulto(@Valid @RequestBody CultoRequestDTO cultoDTO) {
         return this.cultoService.create(cultoDTO);
     }
 
@@ -53,7 +54,7 @@ public class CultoController {
     @PutMapping("/{id}")
     public ResponseEntity<CultoResponseDTO> updateByIdCulto(
             @PathVariable("id") Long id,
-            @Valid @RequestBody CultoResponseDTO cultoDTOAtualizado) {
+            @Valid @RequestBody CultoRequestDTO cultoDTOAtualizado) {
         return cultoService.update(id, cultoDTOAtualizado);
     }
 
