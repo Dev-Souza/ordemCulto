@@ -2,6 +2,7 @@ package com.mava.ordemCulto.infra.mapper;
 
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
+import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoRequestDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,7 +15,7 @@ public interface EquipeIntercessaoMapper {
     EquipeIntercessaoResponseDTO toDTO(EquipeIntercessaoEntity entity);
 
     @Mapping(target = "culto", source = "cultoId", qualifiedByName = "mapCultoIdToEntity")
-    EquipeIntercessaoEntity toEntity(EquipeIntercessaoResponseDTO dto);
+    EquipeIntercessaoEntity toEntity(EquipeIntercessaoRequestDTO dto);
 
     @Named("mapCultoIdToEntity")
     default CultoEntity mapCultoIdToEntity(Long cultoId) {

@@ -1,6 +1,7 @@
 package com.mava.ordemCulto.infra.mapper;
 
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
+import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,7 +18,7 @@ public interface CultoMapper {
     @Mapping(target = "oportunidades", ignore = true)
     @Mapping(target = "equipeIntercessao", ignore = true)
     @Mapping(target = "avisos", ignore = true)
-    CultoEntity toEntity(CultoResponseDTO dto);
+    CultoEntity toEntity(CultoRequestDTO dto);
 
     // Mapeamento de Entity para DTO
     @Mapping(target = "oportunidades", source = "oportunidades")

@@ -3,6 +3,7 @@ package com.mava.ordemCulto.infra.mapper;
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
 import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
+import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadesRequestDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -14,7 +15,7 @@ public interface OportunidadeMapper {
     OportunidadeResponseDTO toDTO(OportunidadeEntity entity);
 
     @Mapping(target = "culto", source = "cultoId", qualifiedByName = "mapCultoIdToEntity")
-    OportunidadeEntity toEntity(OportunidadeResponseDTO dto);
+    OportunidadeEntity toEntity(OportunidadesRequestDTO dto);
 
     @Named("mapCultoIdToEntity")
     default CultoEntity mapCultoIdToEntity(Long cultoId) {
