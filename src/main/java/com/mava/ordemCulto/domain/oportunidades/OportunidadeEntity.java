@@ -16,7 +16,7 @@ public class OportunidadeEntity {
     private String nomePessoa;
     //ENUM
     @Enumerated(EnumType.STRING)
-    private MomentoOportunidade momento;
+    private MomentoOportunidade momentoOportunidade;
     @ManyToOne
     @JoinColumn(name = "culto_id")
     private CultoEntity culto;
