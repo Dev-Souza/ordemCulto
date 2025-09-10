@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface CultoRepository extends JpaRepository<Culto, Integer>{
+public interface CultoRepository extends JpaRepository<Culto, Long>{
     //Filtragem por data
     List<Culto> findByDataCultoBetween(LocalDate dataInicial, LocalDate dataFinal);
 

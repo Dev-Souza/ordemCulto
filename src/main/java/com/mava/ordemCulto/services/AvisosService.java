@@ -19,7 +19,7 @@ public class AvisosService {
     private final AvisosRepository avisosRepository;
     private final CultoRepository cultoRepository;
 
-    private Avisos paraEntidade(AvisosDTO avisosDTO, Integer idCulto) {
+    private Avisos paraEntidade(AvisosDTO avisosDTO, Long idCulto) {
         Avisos avisos = new Avisos();
         avisos.setNomeAviso(avisosDTO.nomeAviso());
         avisos.setReferente(avisosDTO.referente());
@@ -41,7 +41,7 @@ public class AvisosService {
     }
 
     //ADD Aviso in Culto
-    public ResponseEntity<Culto> addAviso(Integer idCulto, AvisosDTO newAviso) {
+    public ResponseEntity<Culto> addAviso(Long idCulto, AvisosDTO newAviso) {
         //Buscando culto existente
         Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Transformando o meu newAviso em entidade
@@ -56,7 +56,7 @@ public class AvisosService {
     }
 
     //GET ALL Avisos por um culto
-    public ResponseEntity<List<AvisosDTO>> getAllAvisosPorUmCulto(Integer idCulto) {
+    public ResponseEntity<List<AvisosDTO>> getAllAvisosPorUmCulto(Long idCulto) {
         Culto cultoExistente = cultoRepository.getById(idCulto);
         //Setar os avisos para fazer o return
         //Converte os avisos para DTO
@@ -69,7 +69,7 @@ public class AvisosService {
     }
 
     //GET BY ID AVISO
-    public ResponseEntity<AvisosDTO> getByIdAviso(Integer idAviso) {
+    public ResponseEntity<AvisosDTO> getByIdAviso(Long idAviso) {
         return avisosRepository.findById(idAviso)
                 .map(avisos -> ResponseEntity.ok(paraDTO(avisos)))
                 .orElseGet(() -> ResponseEntity
@@ -79,7 +79,7 @@ public class AvisosService {
     }
 
     //UPDATE AVISO
-    public ResponseEntity<AvisosDTO> updateAviso(Integer idAviso, AvisosDTO avisoUpdated) {
+    public ResponseEntity<AvisosDTO> updateAviso(Long idAviso, AvisosDTO avisoUpdated) {
         Avisos avisoBuscado = avisosRepository.findById(idAviso).orElseThrow(() -> new RuntimeException("Aviso não encontrado"));
         avisoBuscado.setNomeAviso(avisoUpdated.nomeAviso());
         avisoBuscado.setReferente(avisoUpdated.referente());
@@ -91,7 +91,7 @@ public class AvisosService {
     }
 
     //DELETE AVISO
-    public ResponseEntity<Void> deleteAviso (Integer idAviso){
+    public ResponseEntity<Void> deleteAviso (Long idAviso){
         ResponseEntity<AvisosDTO> avisoEncontrado = getByIdAviso(idAviso);
         avisosRepository.deleteById(idAviso);
         return ResponseEntity.noContent().build();

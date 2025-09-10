@@ -19,17 +19,17 @@ public class AvisosController {
 
     //ADD Aviso In Culto
     @PostMapping("/{idCulto}")
-    public ResponseEntity<Culto> addNewAviso(@PathVariable("idCulto") Integer idCulto, @RequestBody AvisosDTO newAviso) {return avisosService.addAviso(idCulto, newAviso);}
+    public ResponseEntity<Culto> addNewAviso(@PathVariable("idCulto") Long idCulto, @RequestBody AvisosDTO newAviso) {return avisosService.addAviso(idCulto, newAviso);}
 
     //GET ALL Avisos DE UM CULTO
     @GetMapping("/{idCulto}")
-    public ResponseEntity<List<AvisosDTO>> getAllPorUmCulto(@PathVariable("idCulto") Integer idCulto) {return avisosService.getAllAvisosPorUmCulto(idCulto);}
+    public ResponseEntity<List<AvisosDTO>> getAllPorUmCulto(@PathVariable("idCulto") Long idCulto) {return avisosService.getAllAvisosPorUmCulto(idCulto);}
 
     //UPDATE
     @PutMapping("/{idAviso}")
-    public ResponseEntity<AvisosDTO> updateAviso(@PathVariable("idAviso") Integer idAviso, @RequestBody AvisosDTO avisoUpdated) {return avisosService.updateAviso(idAviso, avisoUpdated);}
+    public ResponseEntity<AvisosDTO> updateAviso(@PathVariable("idAviso") Long idAviso, @RequestBody AvisosDTO avisoUpdated) {return avisosService.updateAviso(idAviso, avisoUpdated);}
 
     //DELETE
     @DeleteMapping("/idAviso")
-    public ResponseEntity<Void> deleteAviso(@PathVariable("idAviso") Integer idAviso){return avisosService.deleteAviso(idAviso);}
+    public ResponseEntity<Void> deleteAviso(@PathVariable("idAviso") Long idAviso){return avisosService.deleteAviso(idAviso);}
 }

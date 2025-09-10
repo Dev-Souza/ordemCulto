@@ -45,21 +45,21 @@ public class CultoController {
 
     // GET BY ID
     @GetMapping("/{id}") // Use a barra inicial para melhor prática de URL
-    public ResponseEntity<CultoDTO> getByIdCulto(@PathVariable("id") Integer id) {
+    public ResponseEntity<CultoDTO> getByIdCulto(@PathVariable("id") Long id) {
         return cultoService.getByIdCulto(id);
     }
 
     // UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<CultoDTO> updateByIdCulto(
-            @PathVariable("id") Integer id,
+            @PathVariable("id") Long id,
             @Valid @RequestBody CultoDTO cultoDTOAtualizado) {
         return cultoService.update(id, cultoDTOAtualizado);
     }
 
     // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteByIdCulto(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteByIdCulto(@PathVariable("id") Long id) {
         return cultoService.delete(id);
     }
 

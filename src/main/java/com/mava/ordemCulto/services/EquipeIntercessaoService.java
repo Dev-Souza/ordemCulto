@@ -37,7 +37,7 @@ public class EquipeIntercessaoService {
     }
 
     //ADD Intercessor In Culto
-    public ResponseEntity<Culto> addIntercesor(Integer idCulto, EquipeIntercessaoDTO newIntercessor) {
+    public ResponseEntity<Culto> addIntercesor(Long idCulto, EquipeIntercessaoDTO newIntercessor) {
         //Buscando culto existente
         Culto cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Tranformando o meu newIntercessor em entidade

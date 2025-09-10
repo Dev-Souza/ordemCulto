@@ -95,7 +95,7 @@ public class CultoService {
     }
 
     // Buscar um culto específico
-    public ResponseEntity<CultoDTO> getByIdCulto(Integer id) {
+    public ResponseEntity<CultoDTO> getByIdCulto(Long id) {
         return cultoRepository.findById(id)
                 .map(culto -> ResponseEntity.ok(paraDTO(culto)))
                 .orElseGet(() -> ResponseEntity
@@ -105,7 +105,7 @@ public class CultoService {
     }
 
     // Alterar o culto encontrado por ID
-    public ResponseEntity<CultoDTO> update(Integer id, CultoDTO cultoDTOAtualizado) {
+    public ResponseEntity<CultoDTO> update(Long id, CultoDTO cultoDTOAtualizado) {
         // Buscando o culto pelo ID
         Culto cultoExistente = cultoRepository.findById(id).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
 
@@ -138,7 +138,7 @@ public class CultoService {
     }
 
     // Deletar o culto buscado por ID
-    public ResponseEntity<Void> delete(Integer id) {
+    public ResponseEntity<Void> delete(Long id) {
         ResponseEntity<CultoDTO> cultoBuscado = getByIdCulto(id);
         cultoRepository.deleteById(id);
         return ResponseEntity.noContent().build();
