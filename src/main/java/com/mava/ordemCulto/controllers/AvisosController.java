@@ -32,6 +32,6 @@ public class AvisosController {
     public ResponseEntity<AvisosResponseDTO> updateAviso(@PathVariable("idAviso") Long idAviso, @RequestBody AvisosRequestDTO avisoUpdated) {return avisosService.updateAviso(idAviso, avisoUpdated);}
 
     //DELETE
-    @DeleteMapping("/idAviso")
+    @DeleteMapping("/{idAviso}")
     public ResponseEntity<Void> deleteAviso(@PathVariable("idAviso") Long idAviso){return avisosService.deleteAviso(idAviso);}
 }

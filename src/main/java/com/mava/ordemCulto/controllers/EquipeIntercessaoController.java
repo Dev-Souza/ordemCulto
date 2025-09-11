@@ -32,6 +32,6 @@ public class EquipeIntercessaoController {
     public ResponseEntity<EquipeIntercessaoResponseDTO> updateIntercessor(@PathVariable("idIntercessor") Long idIntercessor, @RequestBody EquipeIntercessaoResponseDTO intercessorUpdated) {return equipeIntercessaoService.updateIntercessor(idIntercessor, intercessorUpdated);}
 
     //DELETE
-    @DeleteMapping("/idIntercessor")
+    @DeleteMapping("/{idIntercessor}")
     public ResponseEntity<Void> deleteIntercessor(@PathVariable("idIntercessor") Long idIntercessor) {return equipeIntercessaoService.deleteIntercessor(idIntercessor);}
 }
