@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.services;
 
-import com.mava.ordemCulto.domain.avisos.Avisos;
+import com.mava.ordemCulto.domain.avisos.AvisosEntity;
 import com.mava.ordemCulto.domain.avisos.dto.AvisosRequestDTO;
 import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
@@ -31,7 +31,7 @@ public class AvisosService {
         //Buscando culto existente
         CultoEntity cultoBuscado = cultoRepository.findById(idCulto).orElseThrow(() -> new RuntimeException("Culto não encontrado"));
         //Transformando o meu newAviso em entidade
-        Avisos novoAviso = avisoMapper.toEntity(newAviso);
+        AvisosEntity novoAviso = avisoMapper.toEntity(newAviso);
 
         //Adicionando esse aviso com os demais
         cultoBuscado.getAvisos().add(novoAviso);
@@ -66,7 +66,7 @@ public class AvisosService {
 
     //UPDATE AVISO
     public ResponseEntity<AvisosResponseDTO> updateAviso(Long idAviso, AvisosRequestDTO avisoUpdated) {
-        Avisos avisoBuscado = avisosRepository.findById(idAviso).orElseThrow(() -> new RuntimeException("Aviso não encontrado"));
+        AvisosEntity avisoBuscado = avisosRepository.findById(idAviso).orElseThrow(() -> new RuntimeException("Aviso não encontrado"));
         avisoBuscado.setNomeAviso(avisoUpdated.nomeAviso());
         avisoBuscado.setReferente(avisoUpdated.referente());
         avisoBuscado.setHorarioEvento(avisoUpdated.horarioEvento());

@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.services;
 
-import com.mava.ordemCulto.domain.avisos.Avisos;
+import com.mava.ordemCulto.domain.avisos.AvisosEntity;
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,12 +67,12 @@ public class CultoService {
         }
 
         // VARREDURA DE AVISOS
-        List<Avisos> avisos = cultoDTO.avisos()
+        List<AvisosEntity> avisos = cultoDTO.avisos()
                 .stream()
                 .map(avisoMapper::toEntity)
                 .toList();
         // O FOR E PRESISTINDO
-        for (Avisos aviso : avisos) {
+        for (AvisosEntity aviso : avisos) {
             aviso.setCulto(newCulto);
             avisosRepository.save(aviso);
         }
@@ -182,13 +181,13 @@ public class CultoService {
 
         // VARRENDO OS AVISOS E SALVANDO AS ALTERAÇÕES
         // PEGANDO OS AVISOS QUE VEM DA REQ E TRANSFORMANDO EM ENTIDADE
-        List<Avisos> avisosAtualizado = cultoDTOAtualizado.avisos()
+        List<AvisosEntity> avisosAtualizado = cultoDTOAtualizado.avisos()
                 .stream()
                 .map(avisoMapper::toEntity)
                 .toList();
 
         // PEGANDO AS QUE JÁ EXISTEM NO CULTO
-        List<Avisos> avisosExistentes = cultoExistente.getAvisos();
+        List<AvisosEntity> avisosExistentes = cultoExistente.getAvisos();
 
         // VERIFICANDO SE A QUANTIDADE É A MESMA
         if (avisosAtualizado.size() != avisosExistentes.size()) throw new RuntimeException("Quantidade de avisos não corresponde!");
@@ -196,9 +195,9 @@ public class CultoService {
         // FAZENDO A VARREDURA PARA PEGAR ELEMENTO POR ELEMENTO
         for (int i = 0; i < avisosExistentes.size(); i++) {
             // PEGANDO AVISO EXISTENTE PELA POSIÇÃO
-            Avisos avisoExistente = avisosExistentes.get(i);
+            AvisosEntity avisoExistente = avisosExistentes.get(i);
             // PEGANDO AVISO ATUALIZADO PELA POSIÇÃO
-            Avisos avisoAtualizado = avisosAtualizado.get(i);
+            AvisosEntity avisoAtualizado = avisosAtualizado.get(i);
 
             // VERIFICANDO SE ALGUMA COISA MUDOU DE FATO PARA FAZER A PERSISTÊNCIA
             if (!Objects.equals(avisoExistente.getNomeAviso(), avisoAtualizado.getNomeAviso()) ||

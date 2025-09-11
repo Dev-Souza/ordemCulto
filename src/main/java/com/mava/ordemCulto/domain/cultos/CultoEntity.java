@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.domain.cultos;
 
-import com.mava.ordemCulto.domain.avisos.Avisos;
+import com.mava.ordemCulto.domain.avisos.AvisosEntity;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
 import jakarta.persistence.*;
@@ -37,5 +37,5 @@ public class CultoEntity {
     private List<EquipeIntercessaoEntity> equipeIntercessao = new ArrayList<>();
     //Relacionamento com a classe Avisos
     @OneToMany(mappedBy = "culto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Avisos> avisos = new ArrayList<>();
+    private List<AvisosEntity> avisos = new ArrayList<>();
 }

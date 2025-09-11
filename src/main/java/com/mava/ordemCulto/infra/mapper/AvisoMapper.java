@@ -1,6 +1,6 @@
 package com.mava.ordemCulto.infra.mapper;
 
-import com.mava.ordemCulto.domain.avisos.Avisos;
+import com.mava.ordemCulto.domain.avisos.AvisosEntity;
 import com.mava.ordemCulto.domain.avisos.dto.AvisosRequestDTO;
 import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
@@ -12,10 +12,10 @@ import org.mapstruct.Named;
 public interface AvisoMapper {
 
     @Mapping(target = "cultoId", source = "culto.id")
-    AvisosResponseDTO toDTO(Avisos entity);
+    AvisosResponseDTO toDTO(AvisosEntity entity);
 
     @Mapping(target = "culto", source = "cultoId", qualifiedByName = "mapCultoIdToEntity")
-    Avisos toEntity(AvisosRequestDTO dto);
+    AvisosEntity toEntity(AvisosRequestDTO dto);
 
     @Named("mapCultoIdToEntity")
     default CultoEntity mapCultoIdToEntity(Long cultoId) {
