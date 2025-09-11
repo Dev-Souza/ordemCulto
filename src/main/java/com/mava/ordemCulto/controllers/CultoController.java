@@ -24,15 +24,11 @@ public class CultoController {
 
     // CREATE
     @PostMapping
-    public ResponseEntity<CultoEntity> createNewCulto(@Valid @RequestBody CultoRequestDTO cultoDTO) {
-        return this.cultoService.create(cultoDTO);
-    }
+    public ResponseEntity<CultoEntity> createNewCulto(@Valid @RequestBody CultoRequestDTO cultoDTO) {return this.cultoService.create(cultoDTO);}
 
     // GET ALL Pagination
     @GetMapping
-    public ResponseEntity<List<CultoResponseDTO>> getAllCultos(@RequestParam int pagina, @RequestParam int itens) {
-        return cultoService.getAll(pagina, itens);
-    }
+    public ResponseEntity<List<CultoResponseDTO>> getAllCultos(@RequestParam int pagina, @RequestParam int itens) {return cultoService.getAll(pagina, itens);}
 
     // GET COUNT Cultos
     @GetMapping("/qtd")
@@ -44,17 +40,11 @@ public class CultoController {
 
     // GET BY ID
     @GetMapping("/{id}") // Use a barra inicial para melhor prática de URL
-    public ResponseEntity<CultoResponseDTO> getByIdCulto(@PathVariable("id") Long id) {
-        return cultoService.getByIdCulto(id);
-    }
+    public ResponseEntity<CultoResponseDTO> getByIdCulto(@PathVariable("id") Long id) {return cultoService.getByIdCulto(id);}
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<CultoResponseDTO> updateByIdCulto(
-            @PathVariable("id") Long id,
-            @Valid @RequestBody CultoRequestDTO cultoDTOAtualizado) {
-        return cultoService.update(id, cultoDTOAtualizado);
-    }
+    public ResponseEntity<CultoResponseDTO> updateByIdCulto(@PathVariable("id") Long id, @Valid @RequestBody CultoRequestDTO cultoDTOAtualizado) {return cultoService.update(id, cultoDTOAtualizado);}
 
     // DELETE
     @DeleteMapping("/{id}")
