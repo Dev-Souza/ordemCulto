@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -119,19 +121,107 @@ public class CultoService {
         cultoExistente.setHoraProsperar(cultoDTOAtualizado.horaProsperar());
         cultoExistente.setPreleitor(cultoDTOAtualizado.preleitor());
 
+        // Varrendo a oportunidade e salvando as alterações
+        // PEGANDO AS OPORTUNIDADES QUE VEM DA REQ E TRANSFORMANDO EM ENTIDADE
+        List<OportunidadeEntity> oportunidadesAtualizadas = cultoDTOAtualizado.oportunidades()
+                .stream()
+                .map(oportunidadeMapper::toEntity)
+                .toList();
+        // PEGANDO AS QUE JÁ EXISTEM NO CULTO
+        List<OportunidadeEntity> oportunidadesExistentes = cultoExistente.getOportunidades();
 
-        // FAZER LÓGICA
+        // VERIFICANDO SE A QUANTIDADE É A MESMA
+        if (oportunidadesAtualizadas.size() != oportunidadesExistentes.size()) throw new RuntimeException("Quantidade de oportunidades não corresponde!");
 
+        // FAZENDO A VARREDURA PARA PEGAR ELEMENTO POR ELEMENTO
+        for (int i = 0; i < oportunidadesExistentes.size(); i++) {
+            // PEGANDO OPORTUNIDADE EXISTENTE PELA POSIÇÃO
+            OportunidadeEntity oportunidadeExistente = oportunidadesExistentes.get(i);
+            // PEGANDO A OPORTUNIDADE ATUALIZADA PELA POSIÇÃO
+            OportunidadeEntity oportunidadeAtualizada = oportunidadesAtualizadas.get(i);
 
-        // Salvando o culto atualizado
+            // VERIFICANDO SE ALGUMA COISA MUDOU DE FATO PARA FAZER A PERSISTENCIA
+            if (!Objects.equals(oportunidadeExistente.getNomePessoa(), oportunidadeAtualizada.getNomePessoa()) ||
+                    !Objects.equals(oportunidadeExistente.getMomentoOportunidade(), oportunidadeAtualizada.getMomentoOportunidade())) {
+                // SETANDO OS DADOS
+                oportunidadeExistente.setNomePessoa(oportunidadeAtualizada.getNomePessoa());
+                oportunidadeExistente.setMomentoOportunidade(oportunidadeAtualizada.getMomentoOportunidade());
+                oportunidadesRepository.save(oportunidadeExistente);
+            }
+        }
+
+        // VARRENDO A EQUIPE DE INTERCESSÃO E SALVANDO AS ALTERAÇÕES
+        // PEGANDO AS EQUIPES QUE VEM DA REQ E TRANSFORMANDO EM ENTIDADE
+        List<EquipeIntercessaoEntity> intecessoresAtualizado = cultoDTOAtualizado.equipeIntercessao()
+                .stream()
+                .map(equipeIntercessaoMapper::toEntity)
+                .toList();
+
+        // PEGANDO AS QUE JÁ EXISTEM NO CULTO
+        List<EquipeIntercessaoEntity> intercessoresExistentes = cultoExistente.getEquipeIntercessao();
+
+        // VERIFICANDO SE A QUANTIDADE É A MESMA
+        if (intecessoresAtualizado.size() != intercessoresExistentes.size()) throw new RuntimeException("Quantidade de intecessores não corresponde!");
+
+        // FAZENDO A VARREDURA PARA PEGAR ELEMENTO POR ELEMENTO
+        for (int i = 0; i < intercessoresExistentes.size(); i++) {
+            // PEGANDO INTERCESSOR EXISTENTE PELA POSIÇÃO
+            EquipeIntercessaoEntity intercessorExistente = intercessoresExistentes.get(i);
+            // PEGANDO INTERCESSOR ATUALIZADO PELA POSIÇÃO
+            EquipeIntercessaoEntity intercessorAtualizado = intecessoresAtualizado.get(i);
+
+            // VERIFICANDO SE ALGUMA COISA MUDOU DE FATO PARA FAZER A PERSISTÊNCIA
+            if (!Objects.equals(intercessorExistente.getNomeObreiro(), intercessorAtualizado.getNomeObreiro()) ||
+                    !Objects.equals(intercessorExistente.getCargoEquipeIntercessao(), intercessorAtualizado.getCargoEquipeIntercessao())) {
+                // SETANDO OS DADOS
+                intercessorExistente.setNomeObreiro(intercessorExistente.getNomeObreiro());
+                intercessorExistente.setCargoEquipeIntercessao(intercessorAtualizado.getCargoEquipeIntercessao());
+                equipeIntercessaoRepository.save(intercessorExistente);
+            }
+        }
+
+        // VARRENDO OS AVISOS E SALVANDO AS ALTERAÇÕES
+        // PEGANDO OS AVISOS QUE VEM DA REQ E TRANSFORMANDO EM ENTIDADE
+        List<Avisos> avisosAtualizado = cultoDTOAtualizado.avisos()
+                .stream()
+                .map(avisoMapper::toEntity)
+                .toList();
+
+        // PEGANDO AS QUE JÁ EXISTEM NO CULTO
+        List<Avisos> avisosExistentes = cultoExistente.getAvisos();
+
+        // VERIFICANDO SE A QUANTIDADE É A MESMA
+        if (avisosAtualizado.size() != avisosExistentes.size()) throw new RuntimeException("Quantidade de avisos não corresponde!");
+
+        // FAZENDO A VARREDURA PARA PEGAR ELEMENTO POR ELEMENTO
+        for (int i = 0; i < avisosExistentes.size(); i++) {
+            // PEGANDO AVISO EXISTENTE PELA POSIÇÃO
+            Avisos avisoExistente = avisosExistentes.get(i);
+            // PEGANDO AVISO ATUALIZADO PELA POSIÇÃO
+            Avisos avisoAtualizado = avisosAtualizado.get(i);
+
+            // VERIFICANDO SE ALGUMA COISA MUDOU DE FATO PARA FAZER A PERSISTÊNCIA
+            if (!Objects.equals(avisoExistente.getNomeAviso(), avisoAtualizado.getNomeAviso()) ||
+                    !Objects.equals(avisoExistente.getReferente(), avisoAtualizado.getReferente()) ||
+                        !Objects.equals(avisoExistente.getDiasEvento(), avisoAtualizado.getDiasEvento()) ||
+                            !Objects.equals(avisoExistente.getHorarioEvento(), avisoAtualizado.getHorarioEvento())) {
+                avisoExistente.setNomeAviso(avisoExistente.getNomeAviso());
+                avisoExistente.setReferente(avisoExistente.getReferente());
+                avisoExistente.setHorarioEvento(avisoExistente.getHorarioEvento());
+                avisoExistente.setDiasEvento(avisoExistente.getDiasEvento());
+                avisosRepository.save(avisoExistente);
+            }
+        }
+
+        // PERSISTINDO O CULTO
         cultoRepository.save(cultoExistente);
-        // Retornando o culto atualizado como DTO
+        // RETORNANDO CULTO ATUALIZADO DTO
         return ResponseEntity.ok(cultoMapper.toDTO(cultoExistente));
     }
 
     // Deletar o culto buscado por ID
     public ResponseEntity<Void> delete(Long id) {
-        if(cultoRepository.existsById(id)) {
+        if (cultoRepository.existsById(id)) {
             cultoRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
