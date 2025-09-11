@@ -6,6 +6,7 @@ import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
+import com.mava.ordemCulto.exceptions.DateIsBeforeException;
 import com.mava.ordemCulto.exceptions.IdInvalidoException;
 import com.mava.ordemCulto.infra.mapper.AvisoMapper;
 import com.mava.ordemCulto.infra.mapper.CultoMapper;
@@ -41,6 +42,9 @@ public class CultoService {
 
     // Criar um culto
     public ResponseEntity<CultoEntity> create(CultoRequestDTO cultoDTO) {
+        // VALIDAÇÕES NECESSÁRIAS PARA SE CRIAR UM CULTO
+        if(cultoDTO.dataCulto().isBefore(LocalDate.now())) throw new DateIsBeforeException("A data passada é anterior à data atual!");
+
         //Salvar culto
         CultoEntity newCulto = cultoRepository.save(cultoMapper.toEntity(cultoDTO));
 
@@ -211,6 +215,9 @@ public class CultoService {
                 avisosRepository.save(avisoExistente);
             }
         }
+
+        // VALIDAÇÕES NECESSÁRIAS PARA SE ALTERAR UM CULTO
+        if(cultoExistente.getDataCulto().isBefore(LocalDate.now())) throw new DateIsBeforeException("A data passada é anterior à data atual!");
 
         // PERSISTINDO O CULTO
         cultoRepository.save(cultoExistente);
