@@ -5,6 +5,7 @@ import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
 import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoRequestDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.dto.EquipeIntercessaoResponseDTO;
+import com.mava.ordemCulto.exceptions.IdInvalidoException;
 import com.mava.ordemCulto.infra.mapper.CultoMapper;
 import com.mava.ordemCulto.infra.mapper.EquipeIntercessaoMapper;
 import com.mava.ordemCulto.repositories.CultoRepository;
@@ -75,8 +76,10 @@ public class EquipeIntercessaoService {
 
     //DELETE INTERCESSOR
     public ResponseEntity<Void> deleteIntercessor(Long idIntercessor) {
-        ResponseEntity<EquipeIntercessaoResponseDTO> equipeIntercessaoEncontrado = getByIdIntercessor(idIntercessor);
-        equipeIntercessaoRepository.deleteById(idIntercessor);
-        return ResponseEntity.noContent().build();
+        if (equipeIntercessaoRepository.existsById(idIntercessor)) {
+            equipeIntercessaoRepository.deleteById(idIntercessor);
+            return ResponseEntity.noContent().build();
+        }
+        throw new IdInvalidoException("ID não encontrado!");
     }
 }

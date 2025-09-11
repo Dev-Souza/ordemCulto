@@ -5,6 +5,7 @@ import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
 import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadeResponseDTO;
 import com.mava.ordemCulto.domain.oportunidades.dto.OportunidadesRequestDTO;
+import com.mava.ordemCulto.exceptions.IdInvalidoException;
 import com.mava.ordemCulto.infra.mapper.CultoMapper;
 import com.mava.ordemCulto.infra.mapper.OportunidadeMapper;
 import com.mava.ordemCulto.repositories.CultoRepository;
@@ -79,8 +80,10 @@ public class OportunidadesService {
 
     //DELETE OPORTUNIDADE
     public ResponseEntity<Void> deleteOportunidade(Long idOportunidade) {
-        ResponseEntity<OportunidadeResponseDTO> oportunidadeEncontrada = getByIdOportunidade(idOportunidade);
-        oportunidadesRepository.deleteById(idOportunidade);
-        return ResponseEntity.noContent().build();
+        if(oportunidadesRepository.existsById(idOportunidade)) {
+            oportunidadesRepository.deleteById(idOportunidade);
+            return ResponseEntity.noContent().build();
+        }
+        throw new IdInvalidoException("ID não encontrado");
     }
 }

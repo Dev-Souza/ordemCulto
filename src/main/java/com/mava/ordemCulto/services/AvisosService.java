@@ -5,6 +5,7 @@ import com.mava.ordemCulto.domain.avisos.dto.AvisosRequestDTO;
 import com.mava.ordemCulto.domain.avisos.dto.AvisosResponseDTO;
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
+import com.mava.ordemCulto.exceptions.IdInvalidoException;
 import com.mava.ordemCulto.infra.mapper.AvisoMapper;
 import com.mava.ordemCulto.infra.mapper.CultoMapper;
 import com.mava.ordemCulto.repositories.AvisosRepository;
@@ -77,8 +78,10 @@ public class AvisosService {
 
     //DELETE AVISO
     public ResponseEntity<Void> deleteAviso (Long idAviso){
-        ResponseEntity<AvisosResponseDTO> avisoEncontrado = getByIdAviso(idAviso);
-        avisosRepository.deleteById(idAviso);
-        return ResponseEntity.noContent().build();
+        if(avisosRepository.existsById(idAviso)){
+            avisosRepository.deleteById(idAviso);
+            return ResponseEntity.noContent().build();
+        }
+        throw new IdInvalidoException("ID não encontrado!");
     }
 }

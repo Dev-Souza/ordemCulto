@@ -6,6 +6,7 @@ import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
 import com.mava.ordemCulto.domain.oportunidades.OportunidadeEntity;
+import com.mava.ordemCulto.exceptions.IdInvalidoException;
 import com.mava.ordemCulto.infra.mapper.AvisoMapper;
 import com.mava.ordemCulto.infra.mapper.CultoMapper;
 import com.mava.ordemCulto.infra.mapper.EquipeIntercessaoMapper;
@@ -130,9 +131,11 @@ public class CultoService {
 
     // Deletar o culto buscado por ID
     public ResponseEntity<Void> delete(Long id) {
-        ResponseEntity<CultoResponseDTO> cultoBuscado = getByIdCulto(id);
-        cultoRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        if(cultoRepository.existsById(id)) {
+            cultoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        throw new IdInvalidoException("ID não encontrado!");
     }
 
     // Filtragem de data de culto
