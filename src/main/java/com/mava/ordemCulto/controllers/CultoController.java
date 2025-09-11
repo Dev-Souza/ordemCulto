@@ -4,6 +4,7 @@ import com.mava.ordemCulto.domain.cultos.CultoEntity;
 import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.cultos.dto.FiltrarCultoPorData;
+import com.mava.ordemCulto.domain.cultos.dto.QuantidadeCultoDTO;
 import com.mava.ordemCulto.services.CultoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +33,7 @@ public class CultoController {
 
     // GET COUNT Cultos
     @GetMapping("/qtd")
-    public ResponseEntity<Map<String, Long>> countCultos() {
-        long total = cultoService.getCount();
-        Map<String, Long> resposta = Map.of("quantidade", total);
-        return ResponseEntity.ok(resposta);
-    }
+    public ResponseEntity<QuantidadeCultoDTO> countCultos() {return ResponseEntity.ok(new QuantidadeCultoDTO(cultoService.getCount()));}
 
     // GET BY ID
     @GetMapping("/{id}") // Use a barra inicial para melhor prática de URL

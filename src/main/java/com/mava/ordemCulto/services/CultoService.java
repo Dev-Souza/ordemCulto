@@ -249,10 +249,7 @@ public class CultoService {
         return ResponseEntity.ok(cultosFiltrados);
     }
 
-    public Long getCount() {
-        Long countCultos = cultoRepository.count();
-        return countCultos;
-    }
+    public Long getCount() {return cultoRepository.count();}
 
     public ResponseEntity<List<CultoResponseDTO>> filtroTitulo(String titulo) {
         List<CultoEntity> cultosFiltrados = cultoRepository.findByTituloCultoContainingIgnoreCase(titulo);
