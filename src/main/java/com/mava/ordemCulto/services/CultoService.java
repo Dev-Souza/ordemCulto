@@ -2,6 +2,7 @@ package com.mava.ordemCulto.services;
 
 import com.mava.ordemCulto.domain.avisos.AvisosEntity;
 import com.mava.ordemCulto.domain.cultos.CultoEntity;
+import com.mava.ordemCulto.domain.cultos.TipoCulto;
 import com.mava.ordemCulto.domain.cultos.dto.CultoRequestDTO;
 import com.mava.ordemCulto.domain.cultos.dto.CultoResponseDTO;
 import com.mava.ordemCulto.domain.equipe_intercessao.EquipeIntercessaoEntity;
@@ -16,15 +17,20 @@ import com.mava.ordemCulto.repositories.AvisosRepository;
 import com.mava.ordemCulto.repositories.CultoRepository;
 import com.mava.ordemCulto.repositories.EquipeIntercessaoRepository;
 import com.mava.ordemCulto.repositories.OportunidadesRepository;
+import com.mava.ordemCulto.utils.GenericSpecifications;
+import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -89,16 +95,26 @@ public class CultoService {
     }
 
     // Buscar todos os cultos
-    public ResponseEntity<List<CultoResponseDTO>> getAll(int pagina, int itens) {
-        //Minha paginação
-        Page<CultoEntity> cultos = cultoRepository.findAll(PageRequest.of(pagina, itens));
-        List<CultoResponseDTO> cultoDTOs = cultos.stream()
-                .map(cultoMapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<CultoResponseDTO> getAll(String tituloCulto, TipoCulto tipoCulto, LocalDate dataInicio, LocalDate dataFinal, Pageable pageable) {
+        // MAPA DE FILTROS
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("tituloCulto", tituloCulto);
+        filters.put("tipoCulto", tipoCulto);
+        filters.put("dataInicio", dataInicio);
+        filters.put("dataFinal", dataFinal);
 
-        return cultoDTOs.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(cultoDTOs);
+        // MAPA DE TIPOS DE CAMPOS
+        Map<String, String> fieldTypes = new HashMap<>();
+        fieldTypes.put("tituloCulto", "string");
+        fieldTypes.put("tipoCulto", "enum");
+        fieldTypes.put("dataInicio", "datestart:dataCulto");
+        fieldTypes.put("dataFinal", "dateend:dataCulto");
+
+        Page<CultoEntity> page = cultoRepository.findAll(
+                GenericSpecifications.buildFilter(filters, fieldTypes),
+                pageable
+        );
+        return page.map(cultoMapper::toDTO);
     }
 
     // Buscar um culto específico
@@ -232,33 +248,5 @@ public class CultoService {
             return ResponseEntity.noContent().build();
         }
         throw new IdInvalidoException("ID não encontrado!");
-    }
-
-    // Filtragem de data de culto
-    public ResponseEntity<List<CultoEntity>> getCultoByData(LocalDate dataInicial, LocalDate dataFinal) {
-        if (dataInicial.isAfter(dataFinal)) {
-            throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
-        }
-        List<CultoEntity> listaCultos = cultoRepository.findByDataCultoBetween(dataInicial, dataFinal);
-        return ResponseEntity.ok(listaCultos);
-    }
-
-    //Buscar datas mais recentes
-    public ResponseEntity<List<CultoEntity>> getAllCultosRecentes() {
-        List<CultoEntity> cultosFiltrados = cultoRepository.findAllByOrderByDataCultoDesc();
-        return ResponseEntity.ok(cultosFiltrados);
-    }
-
-    public Long getCount() {return cultoRepository.count();}
-
-    public ResponseEntity<List<CultoResponseDTO>> filtroTitulo(String titulo) {
-        List<CultoEntity> cultosFiltrados = cultoRepository.findByTituloCultoContainingIgnoreCase(titulo);
-        List<CultoResponseDTO> cultosDTOFiltrados = cultosFiltrados.stream()
-                .map(cultoMapper::toDTO)
-                .collect(Collectors.toList());
-
-        return cultosDTOFiltrados.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(cultosDTOFiltrados);
     }
 }
